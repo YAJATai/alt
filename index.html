@@ -1,1346 +1,1220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="anim">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="ALT. — AI-powered tool discovery for creators. Find your perfect tool.">
-  <meta property="og:title" content="ALT. — Discovery Engine">
-  <meta property="og:description" content="Find your perfect tool. AI-powered tool discovery for creators.">
-  <meta property="og:image" content="/alt-splash.png">
-  <link rel="icon" type="image/png" href="/alt-splash.png">
-  <title>ALT. — Discovery Engine</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#161616">
+  <title>Alt — Switch smarter</title>
   <style>
-    :root {
-      --primary: #5B43E0;
-      --primary-hover: #4A35C9;
-      --accent-blue: #4665ED;
-      --bg: #E4E8F3;
-      --card-bg: #F7F9FD;
-      --text-main: #1F2437;
-      --text-muted: #5B6178;
-      --border-subtle: #D8DCEE;
-      --star-color: #F59E0B;
-      --radius-card: 14px;
-      --shadow-sm: 0 2px 8px rgba(91, 67, 224, 0.06), 0 1px 3px rgba(31,36,55,0.03);
-      --shadow-md: 0 8px 24px rgba(91, 67, 224, 0.09), 0 2px 6px rgba(31,36,55,0.04);
-      --shadow-hover: 0 12px 28px rgba(91, 67, 224, 0.13), 0 4px 10px rgba(31,36,55,0.05);
-      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    @font-face {
+      font-family: 'Orbit Sans';
+      src: local('Arial');
+      font-weight: 400;
+      font-display: block;
+    }
+    @font-face {
+      font-family: 'Orbit Display';
+      src: local('Times New Roman');
+      font-weight: 400;
+      font-display: block;
     }
 
-    * {
-      box-sizing: border-box;
+    :root {
+      --ink: #ffffff;
+      --surface: #161616;
+      --orb-reveal: cubic-bezier(.16, 1, .3, 1);
+      --orb-soft: cubic-bezier(.25, .8, .28, 1);
+    }
+
+    html, body {
+      width: 100%;
       margin: 0;
-      padding: 0;
+      background: var(--surface);
+      scroll-behavior: smooth;
     }
 
     body {
-      background-color: var(--bg);
-      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255,255,255,0.45), transparent);
-      color: var(--text-main);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.5;
+      font-family: "Orbit Sans", Arial, Helvetica, sans-serif;
+      color: var(--ink);
       -webkit-font-smoothing: antialiased;
-      padding-bottom: 40px;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    h1, h2, h3, .brand-font {
-      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    .viewport {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #161616;
     }
 
-    /* Container */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
+    .stage {
+      position: absolute;
+      inset: 0;
+      contain: strict;
+      isolation: isolate;
     }
 
-    /* Navbar */
-    .navbar-sticky {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(247, 249, 253, 0.9);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-subtle);
-      box-shadow: 0 2px 10px rgba(31, 36, 55, 0.03);
+    .brand-mark {
+      position: absolute;
+      top: 2.141745dvh;
+      left: 3.854167vw;
+      width: clamp(34px, min(3.4375vw, 5.2dvh), 66px);
+      z-index: 4;
     }
 
-    .navbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 64px;
-      gap: 16px;
-    }
-
-    .brand {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      color: var(--text-main);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .brand-dot {
-      color: var(--primary);
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
+    .primary-nav {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      margin: 0;
+      padding: 0;
       list-style: none;
     }
-
-    .nav-link {
+    .primary-nav li {
+      position: absolute;
+      top: 3.426791dvh;
+      pointer-events: auto;
+      font-size: clamp(13px, min(1.302083vw, 2.05dvh), 25px);
+    }
+    .primary-nav li a {
+      color: var(--ink);
       text-decoration: none;
-      color: var(--text-muted);
-      font-weight: 500;
-      font-size: 15px;
-      padding: 24px 0;
-      position: relative;
-      transition: var(--transition);
-      cursor: pointer;
+      display: block;
+      transform-origin: left center;
     }
+    .nav-home { left: 10.104167vw; transform: scaleX(1.165); }
+    .nav-resources { left: 17.526042vw; transform: scaleX(1.052); }
+    .nav-benefits { left: 27.578125vw; transform: scaleX(1.126); }
+    .nav-contact { left: 36.171875vw; transform: scaleX(1.168); }
 
-    .nav-link:hover {
-      color: var(--text-main);
-    }
-
-    .nav-link.active {
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    .nav-link.active::after {
-      content: '';
+    .secure-pill {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background-color: var(--primary);
-      border-radius: 3px 3px 0 0;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      min-width: 0;
-    }
-
-    .search-wrapper {
-      position: relative;
-      min-width: 0;
-    }
-
-    .search-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      stroke: var(--text-muted);
-      fill: none;
-      pointer-events: none;
-    }
-
-    .search-input {
-      background: #ECEEF8;
-      border: 1px solid transparent;
-      padding: 9px 16px 9px 40px;
-      border-radius: 99px;
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      width: 200px;
-      max-width: 42vw;
-      transition: var(--transition);
-      color: var(--text-main);
-    }
-
-    .search-input::placeholder {
-      color: #7A80A0;
-    }
-
-    .search-input:focus {
-      background: #FFFFFF;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(91, 67, 224, 0.15);
-      width: 240px;
-      max-width: 48vw;
-    }
-
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #5B43E0 0%, #4665ED 100%);
+      top: 2.336449dvh;
+      right: 7.5vw;
+      height: clamp(34px, 4.439252dvh, 57px);
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--surface);
+      letter-spacing: 0.026923em;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: 600;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(91, 67, 224, 0.25);
+      padding: 0 1.25em;
+      font-size: clamp(12px, min(1.2vw, 1.8dvh), 20px);
+      z-index: 4;
+      white-space: nowrap;
     }
 
-    /* Hero Section */
-    .hero-section {
-      padding: 48px 0 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: center;
+    .orbit-word {
+      position: absolute;
+      top: 11.565421dvh;
+      left: 4.348958vw;
+      margin: 0;
+      font-family: "Orbit Display", "Times New Roman", Times, serif;
+      font-size: min(27.8125vw, 55dvh);
+      letter-spacing: 0.033708em;
+      font-weight: 400;
+      line-height: 1;
+      z-index: 1;
+      white-space: nowrap;
+    }
+    .orbit-word__mask {
+      display: block;
+      overflow: hidden;
+      padding-top: 0.2em;
+      margin-top: -0.2em;
+      padding-bottom: 0.2em;
+      margin-bottom: -0.2em;
+    }
+    .orbit-word__inner {
+      display: block;
+    }
+    .orbit-word__white {
+      color: var(--ink);
+    }
+    .orbit-word__o {
+      display: inline-block;
+      transform: scaleX(1.0866);
+      margin-right: 0.042135em;
+      transform-origin: center;
+    }
+    .orbit-word__pink {
+      background-image: linear-gradient(180deg, #ffc5dc 0%, #fd86db 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
-    .hero-overline {
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
+    .flower {
+      position: absolute;
+      top: 14.749065dvh;
+      left: 49.121328vw;
+      height: 106.109034dvh;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .flower__sizer {
+      height: 100%;
+      width: auto;
+      visibility: hidden;
+      display: block;
+    }
+    .flower__layer {
+      position: absolute;
+      inset: 0;
+    }
+    .flower__layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .flower__layer--top {
+      mask-image: linear-gradient(#0000, #0000);
+      -webkit-mask-image: linear-gradient(#0000, #0000);
+      mask-size: 100% 100%;
+      -webkit-mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+    }
+    .flower__layer--bg {
+      mask-size: 100% 100%;
+      -webkit-mask-size: 100% 100%;
+      mask-repeat: no-repeat;
+      -webkit-mask-repeat: no-repeat;
+    }
+
+    .corner-copy {
+      position: absolute;
+      bottom: 4.361371dvh;
+      color: #f7f7f7;
+      font-size: clamp(14px, min(1.40625vw, 2.102804dvh), 27px);
+      z-index: 3;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .corner-copy--left {
+      left: 3.177083vw;
+      transform: scaleX(1.073);
+      transform-origin: left bottom;
+    }
+    .corner-copy--right {
+      left: 78.28125vw;
+      transform: scaleX(1.058);
+      transform-origin: left bottom;
+    }
+    .support-copy__mask {
+      display: block;
+      overflow: hidden;
+    }
+    .support-copy__inner {
       display: block;
     }
 
-    .hero-title {
-      font-size: 44px;
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      margin-bottom: 16px;
-      color: var(--text-main);
+    /* Mobile Chrome */
+    .mobile-chrome {
+      display: none;
     }
 
-    .hero-desc {
-      font-size: 16px;
-      color: var(--text-muted);
-      margin-bottom: 28px;
-      max-width: 480px;
-      line-height: 1.6;
+    @media (max-width: 900px), (max-aspect-ratio: 4/5) {
+      .primary-nav, .secure-pill {
+        display: none;
+      }
+      .mobile-chrome {
+        display: block;
+        z-index: 12;
+      }
+      .mobile-burger {
+        position: absolute;
+        top: 3dvh;
+        right: 4vw;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: var(--ink);
+        border: none;
+        z-index: 12;
+        cursor: pointer;
+      }
+      .mobile-scrim {
+        position: absolute;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        z-index: 9;
+        display: none;
+      }
+      .mobile-sheet {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50vh;
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        z-index: 10;
+        transform: translateY(100%);
+        transition: transform 0.4s var(--orb-reveal);
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+      }
+      .flower {
+        height: min(55dvh, 110vw);
+      }
+      .orbit-word {
+        font-size: min(27.5vw, 18dvh);
+      }
+      .corner-copy {
+        white-space: normal;
+        width: calc(100% - 6.354166vw);
+      }
+      .corner-copy--right {
+        bottom: 12dvh;
+        left: 3.177083vw;
+      }
     }
 
-    .hero-cta-group {
+    @media (max-width: 1200px), (orientation: portrait) {
+      .orbit-word {
+        left: 0;
+        width: 100%;
+        text-align: center;
+      }
+      .orbit-word__o {
+        transform-origin: center;
+      }
+    }
+
+    /* Animations */
+    .anim .orbit-word__inner {
+      animation: orb-word 1150ms var(--orb-reveal) 300ms both;
+    }
+    .anim .flower {
+      animation: orb-subject 1150ms var(--orb-reveal) 660ms both;
+    }
+    .anim .corner-copy--left .support-copy__inner,
+    .anim .corner-copy--right .support-copy__inner {
+      animation: orb-corner 720ms var(--orb-soft) 980ms both;
+    }
+    .anim .brand-mark {
+      animation: orb-quiet 620ms var(--orb-soft) 100ms both;
+    }
+    .anim .secure-pill {
+      animation: orb-quiet 620ms var(--orb-soft) 340ms both;
+    }
+    .anim .mobile-burger {
+      animation: orb-quiet 620ms var(--orb-soft) 200ms both;
+    }
+    
+    .anim .nav-home { animation: orb-dim 550ms var(--orb-soft) 180ms both; }
+    .anim .nav-resources { animation: orb-dim 550ms var(--orb-soft) 225ms both; }
+    .anim .nav-benefits { animation: orb-dim 550ms var(--orb-soft) 270ms both; }
+    .anim .nav-contact { animation: orb-dim 550ms var(--orb-soft) 315ms both; }
+
+    @keyframes orb-word {
+      from { transform: translateY(118%); }
+      to { transform: translateY(0); }
+    }
+    @keyframes orb-subject {
+      from { opacity: 0; transform: translateX(-50%) translateY(3.4dvh); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    @keyframes orb-corner {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes orb-quiet {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes orb-dim {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .anim .stage > * {
+        animation: orb-dim 280ms linear both !important;
+      }
+    }
+
+    /* Added sections styling */
+    .page-section {
+      padding: 15vh 5vw;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+    }
+    .section-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .section-heading {
+      font-family: "Orbit Display", "Times New Roman", Times, serif;
+      font-size: clamp(40px, 6vw, 90px);
+      font-weight: 400;
+      margin: 0 0 8vh 0;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+    .orbit-word__pink {
+      background-image: linear-gradient(180deg, #ffc5dc 0%, #fd86db 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .feature-card {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 40px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .feature-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .feature-title {
+      font-size: 24px;
+      margin: 0 0 16px 0;
+      font-weight: 400;
+    }
+    .feature-desc {
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+      margin: 0;
+      font-size: 18px;
+    }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .price-card {
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 48px;
+      border-radius: 20px;
       display: flex;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 28px;
-      flex-wrap: wrap;
+      flex-direction: column;
     }
-
+    .price-card--featured {
+      background: rgba(255, 197, 220, 0.03);
+      border-color: #fd86db;
+    }
+    .price-tier {
+      font-size: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .price-card--featured .price-tier {
+      color: #fd86db;
+    }
+    .price-amt {
+      font-family: "Orbit Display", serif;
+      font-size: 80px;
+      margin: 24px 0;
+      line-height: 1;
+    }
+    .price-amt span {
+      font-family: "Orbit Sans", Arial, sans-serif;
+      font-size: 20px;
+      color: rgba(255, 255, 255, 0.5);
+    }
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 12px 24px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      transition: var(--transition);
-      border: none;
+      height: 56px;
+      padding: 0 32px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--surface);
+      text-decoration: none;
+      font-weight: 400;
+      margin-top: 32px;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 18px;
+      transition: transform 0.2s ease;
+    }
+    .btn:hover {
+      transform: scale(1.02);
+    }
+    .btn--outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .btn--outline:hover {
+      border-color: var(--ink);
+    }
+    .footer-section {
+      padding: 10vh 5vw;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    .footer-section a {
+      color: var(--ink);
       text-decoration: none;
     }
 
-    .btn-primary {
-      background-color: var(--primary);
-      color: white;
-      box-shadow: 0 4px 14px rgba(91, 67, 224, 0.3);
-    }
-
-    .btn-primary:hover {
-      background-color: var(--primary-hover);
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(91, 67, 224, 0.35);
-    }
-
-    .btn-ghost {
-      background-color: transparent;
-      color: var(--text-main);
-      border: 1px solid #D1D5DB;
-    }
-
-    .btn-ghost:hover {
-      background-color: #FFFFFF;
-      border-color: var(--primary);
-      color: var(--primary);
-    }
-
-    .rating-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      color: var(--text-muted);
-      font-weight: 500;
-    }
-
-    .stars-group {
-      display: flex;
-      gap: 2px;
-      color: var(--star-color);
-    }
-
-    /* Chat Card */
-    .chat-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-card);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--border-subtle);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 380px;
-    }
-
-    .chat-header {
-      background: var(--primary);
-      color: white;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .robot-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-    }
-
-    .online-indicator {
-      width: 10px;
-      height: 10px;
-      background-color: #10B981;
-      border: 2px solid var(--primary);
-      border-radius: 50%;
-      position: absolute;
-      bottom: 0;
-      right: 0;
-    }
-
-    .chat-header-info {
-      flex: 1;
-    }
-
-    .chat-header-title {
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1.2;
-    }
-
-    .chat-header-sub {
-      font-size: 12px;
-      opacity: 0.85;
-    }
-
-    .chat-body {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      background: #FAF9FE;
-    }
-
-    .message-bubble {
-      max-width: 85%;
-      padding: 12px 16px;
-      border-radius: 14px;
-      font-size: 14px;
-      line-height: 1.45;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .message-ai {
-      background: #FFFFFF;
-      color: var(--text-main);
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .message-user {
-      background: var(--primary);
-      color: white;
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-
-    .chat-input-row {
-      padding: 12px 16px;
-      background: #FFFFFF;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .chat-input {
-      flex: 1;
-      border: 1px solid #E5E7EB;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: inherit;
-      outline: none;
-      transition: var(--transition);
-    }
-
-    .chat-input:focus {
-      border-color: var(--primary);
-    }
-
-    .btn-send {
-      background: var(--primary);
-      color: white;
-      border: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    /* Auth & SaaS flow */
+    .feature-card {
       cursor: pointer;
-      transition: var(--transition);
-      flex-shrink: 0;
+      user-select: none;
     }
-
-    .btn-send:hover {
-      background: var(--primary-hover);
-    }
-
-    /* Typing Dots */
-    .typing-indicator {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      padding: 12px 16px;
-      background: #FFFFFF;
-      border-radius: 14px;
-      border-bottom-left-radius: 4px;
-      width: fit-content;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .typing-dot {
-      width: 6px;
-      height: 6px;
-      background: #9CA3AF;
-      border-radius: 50%;
-      animation: bounce 1.4s infinite ease-in-out both;
-    }
-
-    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-    @keyframes bounce {
-      0%, 80%, 100% { transform: scale(0); }
-      40% { transform: scale(1.0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Main Grid Layout */
-    .main-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 32px;
-      margin-top: 10px;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--text-main);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .count-badge {
-      background: #E3E2F6;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 99px;
-      font-family: 'Inter', sans-serif;
-    }
-
-    /* Tools List */
-    .tools-list {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      align-items: stretch;
-    }
-
-    .tool-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-card);
-      padding: 16px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-sm);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      transition: var(--transition);
-      min-width: 0;
-    }
-
-    .tool-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
-      border-color: #DDD8FB;
-    }
-
-    .tool-left {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex: 1;
-    }
-
-    .tool-tile {
-      width: 44px;
-      height: 44px;
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 700;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      flex-shrink: 0;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    }
-
-    /* Gradient Variants for Tiles */
-    .tile-davinci { background: linear-gradient(135deg, #FF512F 0%, #DD2476 100%); }
-    .tile-capcut  { background: linear-gradient(135deg, #111827 0%, #374151 100%); }
-    .tile-shotcut { background: linear-gradient(135deg, #00B4DB 0%, #0083B0 100%); }
-    .tile-audacity { background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%); }
-    .tile-blender { background: linear-gradient(135deg, #FF8008 0%, #FFC837 100%); }
-    .tile-obs     { background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%); }
-
-    .tool-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .tool-name-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .tool-name {
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .tool-desc {
-      font-size: 12.5px;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    .tag-pills {
-      display: flex;
-      gap: 6px;
-      margin-top: 3px;
-    }
-
-    .tag-pill {
-      background: #E7E9F5;
-      color: #5B6178;
-      font-size: 11px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 6px;
-    }
-
-    .tool-right {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .tool-rating {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .btn-try {
-      background: #F3F0FE;
-      color: var(--primary);
-      border: none;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      font-family: inherit;
-    }
-
-    .btn-try:hover {
-      background: var(--primary);
-      color: white;
-      box-shadow: 0 4px 12px rgba(91, 67, 224, 0.25);
-    }
-
-    /* Sidebar Components */
-    .sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-
-    .savings-card {
-      background: linear-gradient(135deg, #4665ED 0%, #3551D8 100%);
-      border-radius: var(--radius-card);
-      padding: 24px;
-      color: white;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .savings-card::after {
-      content: '';
-      position: absolute;
-      top: -30%;
-      right: -20%;
-      width: 160px;
-      height: 160px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .savings-badge {
-      background: rgba(255, 255, 255, 0.2);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 99px;
-      display: inline-block;
-      margin-bottom: 12px;
-    }
-
-    .savings-title {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-      line-height: 1.2;
-    }
-
-    .savings-sub {
-      font-size: 13px;
-      opacity: 0.9;
-      margin-bottom: 20px;
-      line-height: 1.4;
-    }
-
-    .progress-container {
-      margin-bottom: 20px;
-    }
-
-    .progress-labels {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      opacity: 0.95;
-    }
-
-    .progress-bar-bg {
-      background: rgba(255, 255, 255, 0.25);
-      height: 8px;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      background: #FFFFFF;
-      height: 100%;
-      width: 0%;
-      border-radius: 99px;
-      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    .btn-claim {
-      background: white;
-      color: var(--accent-blue);
-      border: none;
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: var(--transition);
-      font-family: inherit;
-    }
-
-    .btn-claim:hover {
-      background: #F8FAFC;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transform: translateY(-1px);
-    }
-
-    .dna-panel {
-      background: var(--card-bg);
-      border-radius: var(--radius-card);
-      padding: 24px;
-      border: 1px solid var(--border-subtle);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .dna-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .dna-title {
+    .feature-cta {
+      margin: 24px 0 0;
+      color: #fd86db;
       font-size: 16px;
-      font-weight: 700;
-      color: var(--text-main);
+      transition: transform 0.2s ease;
     }
-
-    .dna-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    .feature-card:hover .feature-cta {
+      transform: translateX(4px);
     }
-
-    .dna-row {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
+    .pill-cta {
+      cursor: pointer;
+      transition: transform 0.2s var(--orb-soft), box-shadow 0.2s ease;
     }
-
-    .dna-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      font-weight: 600;
+    .pill-cta:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 0 1px rgba(253, 134, 219, 0.6), 0 8px 30px rgba(253, 134, 219, 0.25);
     }
-
-    .dna-label {
-      color: var(--text-main);
-    }
-
-    .dna-val {
-      color: var(--primary);
-    }
-
-    .dna-track {
-      background: #F3F4F6;
-      height: 6px;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .dna-fill {
-      background: var(--primary);
-      height: 100%;
-      width: 0%;
-      border-radius: 99px;
-      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Empty state */
-    .no-results {
-      padding: 40px;
-      text-align: center;
-      color: var(--text-muted);
-      background: white;
-      border-radius: var(--radius-card);
-      border: 1px dashed var(--border-subtle);
-      display: none;
-    }
-
-    /* Toast Notification */
-    .toast {
+    .auth-modal {
       position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #111827;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 99px;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .auth-modal.is-open {
+      display: flex;
+    }
+    .auth-modal__scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .auth-modal__card {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      background: #1c1c1c;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 34px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      animation: authIn 380ms var(--orb-reveal) both;
+    }
+    @keyframes authIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .auth-modal__brand {
+      font-family: "Orbit Display", "Times New Roman", Times, serif;
+      font-size: 22px;
+      margin: 0 0 4px;
+    }
+    .auth-modal__brand em {
+      font-style: normal;
+      background-image: linear-gradient(180deg, #ffc5dc 0%, #fd86db 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .auth-modal__sub {
+      color: rgba(255, 255, 255, 0.55);
       font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      z-index: 1000;
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      margin: 0 0 24px;
+    }
+    .auth-field {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 12px;
+      color: var(--ink);
+      font-size: 15px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .auth-field:focus {
+      border-color: #fd86db;
+    }
+    .auth-field::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+    }
+    .auth-btn {
       display: flex;
       align-items: center;
-      gap: 8px;
+      justify-content: center;
+      width: 100%;
+      box-sizing: border-box;
+      height: 52px;
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #ffc5dc 0%, #fd86db 100%);
+      color: #161616;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: transform 0.2s ease, filter 0.2s ease;
     }
-
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
+    .auth-btn:hover {
+      transform: scale(1.02);
+      filter: brightness(1.05);
     }
-
-    /* Footer */
-    .footer {
-      margin-top: 60px;
+    .auth-toggle {
+      margin-top: 18px;
       text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 14px;
+    }
+    .auth-toggle button {
+      background: none;
+      border: none;
+      color: #fd86db;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0;
+    }
+    .auth-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--ink);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s ease;
+    }
+    .auth-close:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .auth-error {
+      display: none;
+      background: rgba(253, 134, 219, 0.12);
+      border: 1px solid rgba(253, 134, 219, 0.4);
+      color: #ffc5dc;
+      border-radius: 10px;
       font-size: 13px;
-      color: var(--text-muted);
-      padding: 20px 0;
+      padding: 10px 14px;
+      margin: 0 0 14px;
+    }
+    .auth-error.is-shown {
+      display: block;
+    }
+    .auth-note {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+      margin: 14px 0 0;
+      line-height: 1.5;
     }
 
-    /* Responsive */
-    @media (max-width: 900px) {
-      .hero-section {
-        grid-template-columns: 1fr;
-        padding: 32px 0;
-      }
-      .main-grid {
-        grid-template-columns: 1fr;
-      }
-      .tools-list {
-        grid-template-columns: 1fr;
-      }
-      .nav-links {
-        display: none;
-      }
-      .hero-title {
-        font-size: 32px;
-      }
+    /* Contact form */
+    .contact-form {
+      max-width: 560px;
+      margin: 48px auto 0;
+      display: grid;
+      gap: 16px;
     }
-
-    @media (max-width: 600px) {
-      .tool-card {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .tool-right {
-        width: 100%;
-        justify-content: space-between;
-        margin-top: 10px;
-      }
-      .search-input {
-        width: 140px;
-      }
-      .search-input:focus {
-        width: 170px;
-      }
+    .contact-success {
+      display: none;
+      max-width: 560px;
+      margin: 48px auto 0;
+      border: 1px solid rgba(253, 134, 219, 0.4);
+      background: rgba(253, 134, 219, 0.08);
+      border-radius: 16px;
+      padding: 28px;
+      text-align: center;
+    }
+    .contact-success.is-shown {
+      display: block;
     }
   </style>
 </head>
 <body>
+  <main class="viewport" id="home">
+    <section class="stage">
+      <svg class="brand-mark" viewBox="0 0 66 62" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Brand mark">
+        <path d="M33 1L33 61M3 31L63 31M11.8 9.8L54.2 52.2M54.2 9.8L11.8 52.2" stroke="white" stroke-width="5" stroke-linecap="square"/>
+      </svg>
 
-  <!-- Sticky Navbar -->
-  <header class="navbar-sticky">
-    <div class="container">
-      <nav class="navbar">
-        <a href="#" class="brand brand-font">alt<span class="brand-dot">.</span></a>
-        
-        <ul class="nav-links">
-          <li><a class="nav-link active" onclick="handleNavClick(this, 'recommendations')">Discover</a></li>
-          <li><a class="nav-link" onclick="handleNavClick(this, 'savings')">Savings</a></li>
-          <li><a class="nav-link" onclick="handleNavClick(this, 'community')">Community</a></li>
-        </ul>
+      <ul class="primary-nav">
+        <li class="nav-home"><a href="#home">Home</a></li>
+        <li class="nav-resources"><a href="#features">Features</a></li>
+        <li class="nav-benefits"><a href="#pricing">Pricing</a></li>
+        <li class="nav-contact"><a href="#contact">Contact</a></li>
+      </ul>
 
-        <div class="nav-right">
-          <div class="search-wrapper">
-            <svg class="search-icon" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-            <input type="text" id="search-input" class="search-input" placeholder="Search tools..." oninput="filterTools()">
-          </div>
-          <div class="avatar" title="Your Profile">JD</div>
+      <button class="secure-pill pill-cta" id="nav-cta" aria-label="Get started">Switch smarter</button>
+
+      <h1 class="orbit-word" id="orbit-title" aria-label="Alt">
+        <span class="orbit-word__mask">
+          <span class="orbit-word__inner">
+            <span class="orbit-word__white"><span class="orbit-word__o">A</span></span><span class="orbit-word__pink">LT</span>
+          </span>
+        </span>
+      </h1>
+
+      <div class="flower">
+        <img class="flower__sizer" src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260808_192942_e1086505-d7da-433b-a59b-8220f4e6c808.png&w=1280&q=85" alt="" aria-hidden="true">
+        <div class="flower__layer flower__layer--bg">
+          <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260808_192942_e1086505-d7da-433b-a59b-8220f4e6c808.png&w=1280&q=85" alt="Pixel-art pink and violet lily">
         </div>
-      </nav>
-    </div>
-  </header>
-
-  <main class="container">
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="hero-left">
-        <span class="hero-overline">ALT. DISCOVERY ENGINE</span>
-        <h1 class="hero-title">Find your perfect tool.</h1>
-        <p class="hero-desc">From editing and design to AI and automation — discover tools matched to how you actually work.</p>
-        
-        <div class="hero-cta-group">
-          <button class="btn btn-primary" onclick="focusChat()">Ask Alt</button>
-          <button class="btn btn-ghost" onclick="scrollToElement('recommendations')">Explore top picks</button>
-        </div>
-
-        <div class="rating-row">
-          <div class="stars-group">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          </div>
-          <span>Rated 4.8/5 by 2,400+ creators</span>
+        <div class="flower__layer flower__layer--top" aria-hidden="true">
+          <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260808_151324_bf318a5f-5525-4fc7-aab5-e9a341018828.png&w=1280&q=85" alt="">
         </div>
       </div>
 
-      <!-- Right Chat Card -->
-      <div class="chat-card">
-        <div class="chat-header">
-          <div class="robot-avatar">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-            </svg>
-            <span class="online-indicator"></span>
-          </div>
-          <div class="chat-header-info">
-            <div class="chat-header-title">Ask Alt</div>
-            <div class="chat-header-sub">AI Tool Matchmaker</div>
-          </div>
-        </div>
+      <p class="corner-copy corner-copy--left">
+        <span class="support-copy__mask">
+          <span class="support-copy__inner">Every subscription,<br>instantly compared.</span>
+        </span>
+      </p>
+      <p class="corner-copy corner-copy--right">
+        <span class="support-copy__mask">
+          <span class="support-copy__inner">Less wasted spend.<br>More matched tools.</span>
+        </span>
+      </p>
 
-        <div class="chat-body" id="chat-body">
-          <div class="message-bubble message-ai">
-            Hi! I'm Alt — tell me what you're making and I'll match you with the best tools.
+      <div class="mobile-chrome">
+        <div class="mobile-scrim"></div>
+        <button class="mobile-burger" aria-label="Menu" aria-expanded="false"></button>
+        <div class="mobile-sheet" aria-hidden="true">
+          <div style="padding: 30px; display: flex; flex-direction: column; gap: 16px;">
+            <a href="#home" style="color: var(--ink); text-decoration: none; font-size: 20px;">Home</a>
+            <a href="#features" style="color: var(--ink); text-decoration: none; font-size: 20px;">Features</a>
+            <a href="#pricing" style="color: var(--ink); text-decoration: none; font-size: 20px;">Pricing</a>
+            <a href="#contact" style="color: var(--ink); text-decoration: none; font-size: 20px;">Contact</a>
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.15); margin: 8px 0; width: 100%;">
+            <a href="/app#switchsim" style="color: var(--ink); text-decoration: none; font-size: 16px; opacity: 0.8;">SwitchSim AI</a>
+            <a href="/app#rebuilder" style="color: var(--ink); text-decoration: none; font-size: 16px; opacity: 0.8;">AI Workflow Rebuilder</a>
+            <a href="/app#waste" style="color: var(--ink); text-decoration: none; font-size: 16px; opacity: 0.8;">Subscription Waste Detector</a>
+            <a href="/app#translator" style="color: var(--ink); text-decoration: none; font-size: 16px; opacity: 0.8;">Skill-to-Software Translator</a>
+            <a href="/app#simulator" style="color: var(--ink); text-decoration: none; font-size: 16px; opacity: 0.8;">Subscription Scenario Simulator</a>
+            <button onclick="closeMenu(); openAuth('signup')" style="color: #161616; background: linear-gradient(180deg,#ffc5dc 0%,#fd86db 100%); border: none; border-radius: 999px; font-size: 16px; padding: 14px; margin-top: 8px; cursor: pointer;">Get Started</button>
           </div>
-        </div>
-
-        <div class="chat-input-row">
-          <input type="text" id="chat-input" class="chat-input" placeholder="Type what you need..." onkeypress="handleChatKeyPress(event)">
-          <button class="btn-send" onclick="sendChatMessage()" title="Send">
-            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-            </svg>
-          </button>
         </div>
       </div>
     </section>
+  </main>
 
-    <!-- Main Content Grid -->
-    <div class="main-grid">
-      <!-- Left Main Column -->
-      <div id="recommendations">
-        <div class="section-header">
-          <h2 class="section-title">
-            Recommended for you
-            <span class="count-badge" id="tool-count">6 tools</span>
-          </h2>
+  <section id="features" class="page-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Identify. <span class="orbit-word__pink">Simulate.</span> Switch.</h2>
+      <div class="features-grid">
+        <div class="feature-card" role="button" tabindex="0" data-tool="switchsim" onclick="openTool(this)">
+          <h3 class="feature-title">SwitchSim AI</h3>
+          <p class="feature-desc">Simulate migrations before committing. See how your data maps to new platforms instantly.</p>
+          <p class="feature-cta">Open tool →</p>
         </div>
-
-        <div class="tools-list" id="tools-list">
-          
-          <!-- Tool 1 -->
-          <div class="tool-card" data-title="DaVinci Resolve" data-tags="Video Free">
-            <div class="tool-left">
-              <div class="tool-tile tile-davinci">D</div>
-              <div class="tool-info">
-                <div class="tool-name-row">
-                  <span class="tool-name">DaVinci Resolve</span>
-                </div>
-                <p class="tool-desc">Professional video editing, color grading and VFX, all free.</p>
-                <div class="tag-pills">
-                  <span class="tag-pill">Video</span>
-                  <span class="tag-pill">Free</span>
-                </div>
-              </div>
-            </div>
-            <div class="tool-right">
-              <div class="tool-rating">
-                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                <span>5.0</span>
-              </div>
-              <button class="btn-try" onclick="tryTool('DaVinci Resolve')">Try</button>
-            </div>
-          </div>
-
-          <!-- Tool 2 -->
-          <div class="tool-card" data-title="CapCut" data-tags="Video AI">
-            <div class="tool-left">
-              <div class="tool-tile tile-capcut">C</div>
-              <div class="tool-info">
-                <div class="tool-name-row">
-                  <span class="tool-name">CapCut</span>
-                </div>
-                <p class="tool-desc">All-in-one editing suite with AI captions, effects and templates.</p>
-                <div class="tag-pills">
-                  <span class="tag-pill">Video</span>
-                  <span class="tag-pill">AI</span>
-                </div>
-              </div>
-            </div>
-            <div class="tool-right">
-              <div class="tool-rating">
-                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                <span>4.7</span>
-              </div>
-              <button class="btn-try" onclick="tryTool('CapCut')">Try</button>
-            </div>
-          </div>
-
-          <!-- Tool 3 -->
-          <div class="tool-card" data-title="Shotcut" data-tags="Video Open Source">
-            <div class="tool-left">
-              <div class="tool-tile tile-shotcut">S</div>
-              <div class="tool-info">
-                <div class="tool-name-row">
-                  <span class="tool-name">Shotcut</span>
-                </div>
-                <p class="tool-desc">Open-source cross-platform editor, endless format support.</p>
-                <div class="tag-pills">
-                  <span class="tag-pill">Video</span>
-                  <span class="tag-pill">Open Source</span>
-                </div>
-              </div>
-            </div>
-            <div class="tool-right">
-              <div class="tool-rating">
-                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                <span>4.5</span>
-              </div>
-              <button class="btn-try" onclick="tryTool('Shotcut')">Try</button>
-            </div>
-          </div>
-
-          <!-- Tool 4 -->
-          <div class="tool-card" data-title="Audacity" data-tags="Audio Free">
-            <div class="tool-left">
-              <div class="tool-tile tile-audacity">A</div>
-              <div class="tool-info">
-                <div class="tool-name-row">
-                  <span class="tool-name">Audacity</span>
-                </div>
-                <p class="tool-desc">Free multitrack audio editor for podcasts and music.</p>
-                <div class="tag-pills">
-                  <span class="tag-pill">Audio</span>
-                  <span class="tag-pill">Free</span>
-                </div>
-              </div>
-            </div>
-            <div class="tool-right">
-              <div class="tool-rating">
-                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                <span>4.6</span>
-              </div>
-              <button class="btn-try" onclick="tryTool('Audacity')">Try</button>
-            </div>
-          </div>
-
-          <!-- Tool 5 -->
-          <div class="tool-card" data-title="Blender" data-tags="3D Free">
-            <div class="tool-left">
-              <div class="tool-tile tile-blender">B</div>
-              <div class="tool-info">
-                <div class="tool-name-row">
-                  <span class="tool-name">Blender</span>
-                </div>
-                <p class="tool-desc">3D creation suite for modeling, animation and rendering.</p>
-                <div class="tag-pills">
-                  <span class="tag-pill">3D</span>
-                  <span class="tag-pill">Free</span>
-                </div>
-              </div>
-            </div>
-            <div class="tool-right">
-              <div class="tool-rating">
-                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                <span>4.8</span>
-              </div>
-              <button class="btn-try" onclick="tryTool('Blender')">Try</button>
-            </div>
-          </div>
-
-          <!-- Tool 6 -->
-          <div class="tool-card" data-title="OBS Studio" data-tags="Streaming Free">
-            <div class="tool-left">
-              <div class="tool-tile tile-obs">O</div>
-              <div class="tool-info">
-                <div class="tool-name-row">
-                  <span class="tool-name">OBS Studio</span>
-                </div>
-                <p class="tool-desc">Live streaming and screen recording, battle-tested.</p>
-                <div class="tag-pills">
-                  <span class="tag-pill">Streaming</span>
-                  <span class="tag-pill">Free</span>
-                </div>
-              </div>
-            </div>
-            <div class="tool-right">
-              <div class="tool-rating">
-                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                <span>4.7</span>
-              </div>
-              <button class="btn-try" onclick="tryTool('OBS Studio')">Try</button>
-            </div>
-          </div>
-
-          <div class="no-results" id="no-results">
-            No tools match your search criteria. Try a different keyword!
-          </div>
-
+        <div class="feature-card" role="button" tabindex="0" data-tool="rebuilder" onclick="openTool(this)">
+          <h3 class="feature-title">AI Workflow Rebuilder</h3>
+          <p class="feature-desc">Automatically rebuild your Zapier and Make automations for your new software stack.</p>
+          <p class="feature-cta">Open tool →</p>
         </div>
-      </div>
-
-      <!-- Right Sidebar Column -->
-      <div class="sidebar">
-        <!-- Student Savings Card -->
-        <div class="savings-card" id="savings">
-          <span class="savings-badge">Student Savings</span>
-          <h3 class="savings-title">85% off Pro plans</h3>
-          <p class="savings-sub">Students save on every tool on ALT.</p>
-          
-          <div class="progress-container">
-            <div class="progress-labels">
-              <span>Progress</span>
-              <span>Joined 3 of 4 steps</span>
-            </div>
-            <div class="progress-bar-bg">
-              <div class="progress-bar-fill" id="student-progress" data-width="85%"></div>
-            </div>
-          </div>
-
-          <button class="btn-claim" onclick="showToast('Claiming student offer...')">Claim offer</button>
+        <div class="feature-card" role="button" tabindex="0" data-tool="waste" onclick="openTool(this)">
+          <h3 class="feature-title">Subscription Waste Detector</h3>
+          <p class="feature-desc">Identify overlapping tools and idle seats to trim your SaaS fat with a single click.</p>
+          <p class="feature-cta">Open tool →</p>
         </div>
-
-        <!-- Your DNA Panel -->
-        <div class="dna-panel">
-          <div class="dna-header">
-            <svg width="20" height="20" fill="none" stroke="var(--primary)" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
-            </svg>
-            <h3 class="dna-title">Your DNA</h3>
-          </div>
-
-          <div class="dna-rows">
-            <div class="dna-row">
-              <div class="dna-meta">
-                <span class="dna-label">Video Editor</span>
-                <span class="dna-val">92%</span>
-              </div>
-              <div class="dna-track">
-                <div class="dna-fill" data-width="92%"></div>
-              </div>
-            </div>
-
-            <div class="dna-row">
-              <div class="dna-meta">
-                <span class="dna-label">AI tools</span>
-                <span class="dna-val">78%</span>
-              </div>
-              <div class="dna-track">
-                <div class="dna-fill" data-width="78%"></div>
-              </div>
-            </div>
-
-            <div class="dna-row">
-              <div class="dna-meta">
-                <span class="dna-label">120h/week</span>
-                <span class="dna-val">85%</span>
-              </div>
-              <div class="dna-track">
-                <div class="dna-fill" data-width="85%"></div>
-              </div>
-            </div>
-          </div>
+        <div class="feature-card" role="button" tabindex="0" data-tool="translator" onclick="openTool(this)">
+          <h3 class="feature-title">Skill-to-Software Translator</h3>
+          <p class="feature-desc">Match your team's existing skills to the shortest learning curve tools.</p>
+          <p class="feature-cta">Open tool →</p>
+        </div>
+        <div class="feature-card" role="button" tabindex="0" data-tool="simulator" onclick="openTool(this)">
+          <h3 class="feature-title">Subscription Scenario Simulator</h3>
+          <p class="feature-desc">Forecast your SaaS spend across different growth stages and tool combinations.</p>
+          <p class="feature-cta">Open tool →</p>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      alt<span class="brand-dot">.</span> — find your perfect tool.
-    </footer>
-  </main>
+  <section id="pricing" class="page-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Simple, <span class="orbit-word__pink">transparent</span> pricing.</h2>
+      <div class="pricing-grid">
+        <div class="price-card">
+          <div class="price-tier">Starter</div>
+          <div class="price-amt">$0<span>/mo</span></div>
+          <p class="feature-desc">Perfect for individuals looking to track and optimize personal subscriptions.</p>
+          <a href="javascript:void(0)" class="btn btn--outline" data-plan="starter" onclick="openAuth('signup', this)">Get Started</a>
+        </div>
+        <div class="price-card price-card--featured">
+          <div class="price-tier">Pro</div>
+          <div class="price-amt">$49<span>/mo</span></div>
+          <p class="feature-desc">For teams running complex workflows needing AI automation and simulation.</p>
+          <a href="javascript:void(0)" class="btn" data-plan="pro" onclick="openAuth('signup', this)">Start Free Trial</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <!-- Floating Toast Notification -->
-  <div id="toast" class="toast">
-    <svg width="18" height="18" fill="none" stroke="#5B43E0" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-    </svg>
-    <span id="toast-text">Notification message</span>
+  <section id="contact" class="page-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Talk to the <span class="orbit-word__pink">team.</span></h2>
+      <p class="feature-desc" style="text-align:center; max-width: 560px; margin: 0 auto;">
+        Questions about migrations, enterprise licensing, or onboarding your team? Drop us a note and we'll get back within a business day.
+      </p>
+      <form class="contact-form" id="contact-form" novalidate>
+        <input class="auth-field" type="text" name="name" placeholder="Your name" required>
+        <input class="auth-field" type="email" name="email" placeholder="Work email" required>
+        <textarea class="auth-field" name="message" rows="4" placeholder="How can we help?" required style="resize: vertical;"></textarea>
+        <button type="submit" class="auth-btn">Send message</button>
+      </form>
+      <div class="contact-success" id="contact-success">
+        <p style="font-size: 28px; margin: 0 0 8px;">✨</p>
+        <p style="font-size: 20px; margin: 0 0 6px; font-weight: 600;">Message sent!</p>
+        <p style="color: rgba(255,255,255,0.6); margin: 0; font-size: 15px;">Thanks for reaching out — our team will reply to your inbox shortly.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-section">
+    <div class="section-inner">
+      <p>Ready to switch smarter? <a href="/app">Launch the dashboard</a> — or <a href="#contact">contact our sales team</a> for enterprise solutions.</p>
+      <p style="margin-top: 40px; font-size: 14px; opacity: 0.5;">&copy; 2026 Alt Systems Inc. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div class="auth-modal" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <div class="auth-modal__scrim" onclick="closeAuth()"></div>
+    <div class="auth-modal__card">
+      <button class="auth-close" onclick="closeAuth()" aria-label="Close">✕</button>
+      <h2 class="auth-modal__brand" id="auth-title">Alt<em>.</em></h2>
+      <p class="auth-modal__sub" id="auth-sub">Create your account to start switching smarter.</p>
+      <div class="auth-error" id="auth-error"></div>
+      <form id="auth-form" novalidate>
+        <input class="auth-field" type="text" id="auth-name" placeholder="Full name" autocomplete="name">
+        <input class="auth-field" type="email" id="auth-email" placeholder="Email address" autocomplete="email">
+        <input class="auth-field" type="password" id="auth-password" placeholder="Password" autocomplete="current-password">
+        <input type="hidden" id="auth-mode" value="signup">
+        <input type="hidden" id="auth-plan" value="starter">
+        <input type="hidden" id="auth-tool" value="">
+        <button type="submit" class="auth-btn" id="auth-submit">Create account</button>
+      </form>
+      <p class="auth-toggle" id="auth-toggle">
+        <span id="auth-toggle-label">Already have an account?</span>
+        <button type="button" id="auth-toggle-btn" onclick="toggleAuthMode()">Sign in</button>
+      </p>
+      <p class="auth-note">By continuing you agree to our Terms &amp; Privacy Policy.</p>
+    </div>
   </div>
 
   <script>
-    // Animate Progress Bars on Load
-    document.addEventListener('DOMContentLoaded', () => {
-      setTimeout(() => {
-        const fills = document.querySelectorAll('.progress-bar-fill, .dna-fill');
-        fills.forEach(fill => {
-          const targetWidth = fill.getAttribute('data-width');
-          if (targetWidth) {
-            fill.style.width = targetWidth;
-          }
-        });
-      }, 150);
+    // 1. Entrance Animation cleanup
+    setTimeout(() => {
+      document.documentElement.classList.remove('anim');
+    }, 6000);
+
+    // 2. Mobile Menu
+    const burger = document.querySelector('.mobile-burger');
+    const sheet = document.querySelector('.mobile-sheet');
+    const scrim = document.querySelector('.mobile-scrim');
+    let menuOpen = false;
+
+    function toggleMenu() {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
+        sheet.style.transform = 'translateY(0)';
+        scrim.style.display = 'block';
+        burger.setAttribute('aria-expanded', 'true');
+        sheet.removeAttribute('aria-hidden');
+      } else {
+        sheet.style.transform = 'translateY(100%)';
+        scrim.style.display = 'none';
+        burger.setAttribute('aria-expanded', 'false');
+        sheet.setAttribute('aria-hidden', 'true');
+      }
+    }
+    
+    burger.addEventListener('click', toggleMenu);
+    scrim.addEventListener('click', toggleMenu);
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menuOpen) toggleMenu();
     });
 
-    // Chat functionality
-    function handleChatKeyPress(event) {
-      if (event.key === 'Enter') {
-        sendChatMessage();
-      }
-    }
+    // 3. Morph-reveal Trail
+    const stage = document.querySelector('.stage');
+    const flower = document.querySelector('.flower');
+    const layerBg = document.querySelector('.flower__layer--bg');
+    const layerTop = document.querySelector('.flower__layer--top');
 
-    function sendChatMessage() {
-      const input = document.getElementById('chat-input');
-      const text = input.value.trim();
-      if (!text) return;
+    const TRAIL_MAX_POINTS = 60;
+    const TRAIL_HEAD_R = 140;
+    const TRAIL_NOISE_AMP = 44;
+    const TRAIL_BLOB_PTS = 24;
+    const TRAIL_FADE_SPEED = 0.92;
+    const TRAIL_SAMPLE_DIST = 8;
 
-      const chatBody = document.getElementById('chat-body');
+    let hovering = false;
+    let headRadius = 0;
+    let points = [];
+    let mouseX = 0;
+    let mouseY = 0;
+    let time = 0;
 
-      // Append User Bubble
-      const userBubble = document.createElement('div');
-      userBubble.className = 'message-bubble message-user';
-      userBubble.textContent = text;
-      chatBody.appendChild(userBubble);
+    const canvasBg = document.createElement('canvas');
+    const ctxBg = canvasBg.getContext('2d');
+    const canvasTop = document.createElement('canvas');
+    const ctxTop = canvasTop.getContext('2d');
 
-      input.value = '';
-      chatBody.scrollTop = chatBody.scrollHeight;
+    let flowerRect = { left: 0, top: 0, width: 1, height: 1 };
 
-      // Show Typing Indicator
-      const typingIndicator = document.createElement('div');
-      typingIndicator.className = 'typing-indicator';
-      typingIndicator.id = 'active-typing';
-      typingIndicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-      chatBody.appendChild(typingIndicator);
-      chatBody.scrollTop = chatBody.scrollHeight;
-
-      // Simulate AI Response after 800ms
-      setTimeout(() => {
-        const activeTyping = document.getElementById('active-typing');
-        if (activeTyping) {
-          activeTyping.remove();
-        }
-
-        const aiBubble = document.createElement('div');
-        aiBubble.className = 'message-bubble message-ai';
-        aiBubble.textContent = "Great pick! I'd start with DaVinci Resolve and CapCut — both free and top-rated. Want more like these?";
-        chatBody.appendChild(aiBubble);
-        chatBody.scrollTop = chatBody.scrollHeight;
-      }, 800);
-    }
-
-    function focusChat() {
-      const chatInput = document.getElementById('chat-input');
-      chatInput.focus();
-      chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // Try Tool Toast Action
-    let toastTimeout;
-    function tryTool(toolName) {
-      showToast(`Opening ${toolName}…`);
-    }
-
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastText = document.getElementById('toast-text');
+    function resizeCanvas() {
+      const rect = flower.getBoundingClientRect();
+      flowerRect = rect;
       
-      toastText.textContent = message;
-      toast.classList.add('show');
+      const w = Math.max(rect.width, 1);
+      const h = Math.max(rect.height, 1);
 
-      clearTimeout(toastTimeout);
-      toastTimeout = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2200);
-    }
-
-    // Nav Item Click Handler
-    function handleNavClick(element, sectionId) {
-      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-      element.classList.add('active');
-
-      if (sectionId === 'community') {
-        showToast('Community coming soon');
-      } else {
-        scrollToElement(sectionId);
+      if (canvasBg.width !== w || canvasBg.height !== h) {
+        canvasBg.width = w;
+        canvasBg.height = h;
+        canvasTop.width = w;
+        canvasTop.height = h;
       }
     }
-
-    function scrollToElement(id) {
-      const target = document.getElementById(id);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    
+    window.addEventListener('resize', resizeCanvas);
+    const sizer = document.querySelector('.flower__sizer');
+    if (sizer.complete) {
+      resizeCanvas();
+    } else {
+      sizer.addEventListener('load', resizeCanvas);
     }
 
-    // Live Search Filter
-    function filterTools() {
-      const query = document.getElementById('search-input').value.toLowerCase().trim();
-      const cards = document.querySelectorAll('.tool-card');
-      const noResults = document.getElementById('no-results');
-      const countBadge = document.getElementById('tool-count');
+    stage.addEventListener('mouseenter', () => { hovering = true; });
+    stage.addEventListener('mouseleave', () => { hovering = false; });
+    stage.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    });
+
+    function drawMorphBlob(ctx, cx, cy, r, t, seed) {
+      if (r < 2) return;
       
-      let visibleCount = 0;
+      const pts = [];
+      for (let i = 0; i < TRAIL_BLOB_PTS; i++) {
+        const angle = (i / TRAIL_BLOB_PTS) * Math.PI * 2;
+        const n1 = Math.sin(angle * 3 + t * 1.4 + seed) * 0.45;
+        const n2 = Math.sin(angle * 5 - t * 0.9 + seed * 2.3) * 0.3;
+        const n3 = Math.cos(angle * 2 + t * 1.8 + seed * 0.7) * 0.25;
+        const noise = (n1 + n2 + n3) * TRAIL_NOISE_AMP * (r / TRAIL_HEAD_R);
+        const currentR = Math.max(0.1, r + noise);
+        pts.push({
+          x: cx + Math.cos(angle) * currentR,
+          y: cy + Math.sin(angle) * currentR
+        });
+      }
 
-      cards.forEach(card => {
-        const title = card.getAttribute('data-title').toLowerCase();
-        const tags = card.getAttribute('data-tags').toLowerCase();
-        const desc = card.querySelector('.tool-desc').textContent.toLowerCase();
+      ctx.beginPath();
+      ctx.moveTo(
+        (pts[pts.length - 1].x + pts[0].x) / 2, 
+        (pts[pts.length - 1].y + pts[0].y) / 2
+      );
+      
+      for (let i = 0; i < pts.length; i++) {
+        const nextPt = pts[(i + 1) % pts.length];
+        ctx.quadraticCurveTo(
+          pts[i].x, 
+          pts[i].y, 
+          (pts[i].x + nextPt.x) / 2, 
+          (pts[i].y + nextPt.y) / 2
+        );
+      }
+      
+      ctx.closePath();
+      ctx.fill();
+    }
 
-        if (title.includes(query) || tags.includes(query) || desc.includes(query)) {
-          card.style.display = 'flex';
-          visibleCount++;
+    function render() {
+      // Continuously update rect to account for scrolling
+      flowerRect = flower.getBoundingClientRect();
+
+      // Logic updates
+      const targetR = hovering ? TRAIL_HEAD_R : 0;
+      headRadius += (targetR - headRadius) * (hovering ? 0.14 : 0.04);
+      
+      const fX = mouseX - flowerRect.left;
+      const fY = mouseY - flowerRect.top;
+
+      if (hovering && headRadius > 5) {
+        if (points.length === 0) {
+          points.push({ x: fX, y: fY, r: headRadius, alpha: 1, seed: Math.random() * 100 });
         } else {
-          card.style.display = 'none';
+          const lastP = points[points.length - 1];
+          const dist = Math.hypot(fX - lastP.x, fY - lastP.y);
+          if (dist > TRAIL_SAMPLE_DIST) {
+            points.push({ x: fX, y: fY, r: headRadius, alpha: 1, seed: Math.random() * 100 });
+            if (points.length > TRAIL_MAX_POINTS) {
+              points.shift();
+            }
+          } else {
+             lastP.x = fX;
+             lastP.y = fY;
+             lastP.r = headRadius;
+          }
         }
-      });
+      }
 
-      countBadge.textContent = `${visibleCount} ${visibleCount === 1 ? 'tool' : 'tools'}`;
+      time += 0.016;
 
-      if (visibleCount === 0) {
-        noResults.style.display = 'block';
-      } else {
-        noResults.style.display = 'none';
+      for (let i = 0; i < points.length; i++) {
+        points[i].alpha *= TRAIL_FADE_SPEED;
+        points[i].r *= 0.995;
+      }
+      points = points.filter(p => p.alpha >= 0.01);
+
+      // Rendering
+      ctxBg.globalCompositeOperation = 'source-over';
+      ctxBg.fillStyle = '#ffffff';
+      ctxBg.fillRect(0, 0, canvasBg.width, canvasBg.height);
+      
+      ctxBg.globalCompositeOperation = 'destination-out';
+      ctxBg.fillStyle = '#ffffff';
+      
+      for (const p of points) {
+        ctxBg.globalAlpha = p.alpha;
+        drawMorphBlob(ctxBg, p.x, p.y, p.r, time, p.seed);
+      }
+      ctxBg.globalAlpha = 1;
+
+      ctxTop.globalCompositeOperation = 'source-over';
+      ctxTop.clearRect(0, 0, canvasTop.width, canvasTop.height);
+      ctxTop.fillStyle = '#ffffff';
+      
+      for (const p of points) {
+        ctxTop.globalAlpha = p.alpha;
+        drawMorphBlob(ctxTop, p.x, p.y, p.r, time, p.seed);
+      }
+      ctxTop.globalAlpha = 1;
+
+      // Apply CSS masks
+      if (flowerRect.width > 1 && flowerRect.height > 1) {
+        if (points.length > 0 || headRadius > 1) {
+          const urlBg = `url(${canvasBg.toDataURL()})`;
+          const urlTop = `url(${canvasTop.toDataURL()})`;
+          
+          layerBg.style.webkitMaskImage = urlBg;
+          layerBg.style.maskImage = urlBg;
+          
+          layerTop.style.webkitMaskImage = urlTop;
+          layerTop.style.maskImage = urlTop;
+        } else {
+          layerBg.style.webkitMaskImage = 'none';
+          layerBg.style.maskImage = 'none';
+          layerTop.style.webkitMaskImage = 'linear-gradient(#0000, #0000)';
+          layerTop.style.maskImage = 'linear-gradient(#0000, #0000)';
+        }
+      }
+
+      requestAnimationFrame(render);
+    }
+    
+    requestAnimationFrame(render);
+  </script>
+
+  <script>
+    // ===== SaaS flow: auth + navigation =====
+    const SESSION_KEY = 'alt_session';
+    const USERS_KEY = 'alt_users';
+
+    function getUsers() {
+      try { return JSON.parse(localStorage.getItem(USERS_KEY)) || {}; } catch (e) { return {}; }
+    }
+    function getSession() {
+      try { return JSON.parse(localStorage.getItem(SESSION_KEY)) || null; } catch (e) { return null; }
+    }
+
+    function closeMenu() {
+      if (typeof toggleMenu === 'function') {
+        const sheet = document.querySelector('.mobile-sheet');
+        const scrim = document.querySelector('.mobile-scrim');
+        const burger = document.querySelector('.mobile-burger');
+        if (sheet && sheet.style.transform === 'translateY(0)') {
+          sheet.style.transform = 'translateY(100%)';
+          scrim.style.display = 'none';
+          burger.setAttribute('aria-expanded', 'false');
+          sheet.setAttribute('aria-hidden', 'true');
+        }
       }
     }
+
+    let authPendingTool = '';
+    let authLastMode = 'signup';
+
+    function openAuth(mode, trigger, toolAnchor) {
+      closeMenu();
+      authLastMode = mode || 'signup';
+      authPendingTool = toolAnchor || '';
+
+      const modal = document.getElementById('auth-modal');
+      const modeEl = document.getElementById('auth-mode');
+      const planEl = document.getElementById('auth-plan');
+      const submitBtn = document.getElementById('auth-submit');
+      const sub = document.getElementById('auth-sub');
+      const toggleLabel = document.getElementById('auth-toggle-label');
+      const toggleBtn = document.getElementById('auth-toggle-btn');
+
+      if (trigger && trigger.dataset && trigger.dataset.plan) {
+        planEl.value = trigger.dataset.plan;
+      }
+
+      if (authLastMode === 'signin') {
+        modeEl.value = 'signin';
+        submitBtn.textContent = 'Sign in';
+        sub.textContent = 'Welcome back — continue where you left off.';
+        toggleLabel.textContent = "Don't have an account?";
+        toggleBtn.textContent = 'Sign up';
+        document.getElementById('auth-name').style.display = 'none';
+        document.getElementById('auth-name').removeAttribute('required');
+      } else {
+        modeEl.value = 'signup';
+        submitBtn.textContent = 'Create account';
+        sub.textContent = 'Create your account to start switching smarter.';
+        toggleLabel.textContent = 'Already have an account?';
+        toggleBtn.textContent = 'Sign in';
+        document.getElementById('auth-name').style.display = 'block';
+        document.getElementById('auth-name').setAttribute('required', 'required');
+      }
+      showAuthError('');
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      const focusEl = authLastMode === 'signin' ? 'auth-email' : 'auth-name';
+      setTimeout(() => document.getElementById(focusEl).focus(), 80);
+    }
+
+    function toggleAuthMode() {
+      openAuth(authLastMode === 'signup' ? 'signin' : 'signup', null, authPendingTool);
+    }
+
+    function closeAuth() {
+      document.getElementById('auth-modal').classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    function showAuthError(msg) {
+      const el = document.getElementById('auth-error');
+      el.textContent = msg;
+      el.classList.toggle('is-shown', !!msg);
+    }
+
+    function goToApp(hash) {
+      window.location.href = '/app' + (hash || '');
+    }
+
+    function openTool(card) {
+      const anchor = (card.dataset && card.dataset.tool) || '';
+      if (getSession()) {
+        goToApp('#' + anchor);
+      } else {
+        authPendingTool = anchor;
+        openAuth('signup');
+      }
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const mode = document.getElementById('auth-mode').value;
+      const name = document.getElementById('auth-name').value.trim();
+      const email = document.getElementById('auth-email').value.trim().toLowerCase();
+      const password = document.getElementById('auth-password').value;
+
+      if (!email) return showAuthError('Please enter your email address.');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showAuthError('That email address doesn\'t look right.');
+      if (!password || password.length < 6) return showAuthError('Password must be at least 6 characters.');
+      if (mode === 'signup' && !name) return showAuthError('Please enter your full name.');
+
+      const users = getUsers();
+      const session = getSession();
+
+      if (mode === 'signin') {
+        const u = users[email];
+        if (!u || u.password !== password) return showAuthError('Invalid email or password.');
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ name: u.name, email, plan: u.plan, at: Date.now() }));
+      } else {
+        if (users[email]) return showAuthError('An account with this email already exists. Try signing in.');
+        const plan = document.getElementById('auth-plan').value;
+        users[email] = { name, password, plan, at: Date.now() };
+        localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        localStorage.setItem(SESSION_KEY, JSON.stringify({ name, email, plan, at: Date.now() }));
+      }
+
+      const target = authPendingTool ? '#' + authPendingTool : '';
+      goToApp(target);
+    }
+
+    function refreshCta() {
+      const cta = document.getElementById('nav-cta');
+      if (getSession()) {
+        cta.textContent = 'Open Dashboard';
+        cta.onclick = () => goToApp('');
+      } else {
+        cta.textContent = 'Switch smarter';
+        cta.onclick = () => openAuth('signup');
+      }
+    }
+
+    // Wire up
+    document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
+    document.getElementById('nav-cta').addEventListener('click', () => {
+      if (getSession()) goToApp(''); else openAuth('signup');
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeAuth();
+        closeMenu();
+      }
+    });
+
+    // Contact form (simulated submission)
+    document.getElementById('contact-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const name = f.name.value.trim();
+      const email = f.email.value.trim();
+      const message = f.message.value.trim();
+      if (!name) { f.name.focus(); f.name.style.borderColor = '#fd86db'; return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { f.email.focus(); f.email.style.borderColor = '#fd86db'; return; }
+      if (!message) { f.message.focus(); f.message.style.borderColor = '#fd86db'; return; }
+      f.reset();
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('contact-success').classList.add('is-shown');
+    });
+
+    refreshCta();
   </script>
 </body>
 </html>

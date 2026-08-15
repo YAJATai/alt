@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ARTEFACTS — AI-powered optimization of software spending and discovery of cost-effective alternative workflows.">
+    <meta property="og:title" content="ARTEFACTS — Insights from Ideation">
+    <meta property="og:description" content="Reduce software and subscription spending with AI-powered alternative workflows.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23062C22'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='bold' fill='%23D1FAE5' text-anchor='middle'%3E%24%3C/text%3E%3C/svg%3E">
+    <title>ARTEFACTS — Insights from Ideation</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        artefact: {
+                            bg: '#F9FAF9',
+                            dark: '#062C22',
+                            surface: '#FFFFFF',
+                            border: '#E5E7EB',
+                            accent: '#10B981',
+                            'accent-light': '#D1FAE5',
+                            muted: '#4B5563',
+                            danger: '#EF4444',
+                            warning: '#F59E0B'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(6, 44, 34, 0.05)',
+                        'hover': '0 10px 25px -5px rgba(6, 44, 34, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #F9FAF9;
+            color: #062C22;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-header {
+            background: rgba(249, 250, 249, 0.85);
+            backdrop-filter: blur(12px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #F1F5F9;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+        .animated-counter {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #switchsim, #rebuilder, #waste, #translator, #simulator {
+            scroll-margin-top: 96px;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Sticky Header & Global Summary Bar Area -->
+    <header class="sticky top-0 z-40 glass-header border-b border-artefact-border/80 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            
+            <!-- Top Branding Line -->
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+                <div>
+                    <div class="flex items-center gap-3">
+                        <a href="/" class="group inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-artefact-accent transition mb-1">
+                            <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/></svg>
+                            Home
+                        </a>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-artefact-dark">
+                            ARTEFACTS
+                        </h1>
+                        <span class="text-xl sm:text-2xl font-light text-slate-400">—</span>
+                        <span class="text-base sm:text-xl font-medium text-slate-600">Insights from Ideation</span>
+                    </div>
+                    <div class="mt-1.5 flex items-center gap-2">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-artefact-accent-light text-artefact-dark border border-emerald-200">
+                            <span class="w-1.5 h-1.5 rounded-full bg-artefact-accent animate-pulse mr-1.5"></span>
+                            AI-Powered Financial Optimization
+                        </span>
+                        <span class="text-xs text-slate-400 font-medium hidden sm:inline">• Live Creative Stack Engine</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <button onclick="resetAllData()" class="px-3.5 py-2 text-xs font-semibold text-slate-600 hover:text-artefact-dark bg-white hover:bg-slate-50 border border-artefact-border rounded-xl transition shadow-sm flex items-center gap-1.5">
+                        <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        Reset Baseline
+                    </button>
+                    <div class="h-8 w-[1px] bg-slate-200 hidden sm:block"></div>
+                    <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-artefact-border shadow-sm">
+                        <div class="w-7 h-7 rounded-lg bg-artefact-dark text-white font-bold text-xs flex items-center justify-center">
+                            JS
+                        </div>
+                        <div class="text-left leading-tight hidden sm:block">
+                            <p class="text-xs font-bold text-artefact-dark">Creative Studio</p>
+                            <p class="text-[10px] text-slate-400">Pro Tier</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Summary Metrics Bar -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+                <!-- Metric 1 -->
+                <div class="bg-white rounded-2xl p-3.5 sm:p-4 border border-artefact-border shadow-soft flex flex-col justify-between hover:border-emerald-200 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Monthly Spend</span>
+                        <span class="p-1.5 rounded-lg bg-slate-100 text-slate-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-xl sm:text-2xl font-extrabold text-artefact-dark tracking-tight" id="metric-monthly-spend">₹0</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Across active software tools</p>
+                    </div>
+                </div>
+
+                <!-- Metric 2 -->
+                <div class="bg-white rounded-2xl p-3.5 sm:p-4 border border-artefact-border shadow-soft flex flex-col justify-between hover:border-emerald-200 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wider">Monthly Savings</span>
+                        <span class="p-1.5 rounded-lg bg-emerald-50 text-emerald-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-xl sm:text-2xl font-extrabold text-emerald-600 tracking-tight" id="metric-monthly-savings">₹0</p>
+                        <p class="text-[11px] text-emerald-700/70 mt-0.5" id="metric-monthly-savings-sub">Optimizable monthly leakage</p>
+                    </div>
+                </div>
+
+                <!-- Metric 3 -->
+                <div class="bg-white rounded-2xl p-3.5 sm:p-4 border border-artefact-border shadow-soft flex flex-col justify-between hover:border-emerald-200 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Unused/Waste Tools</span>
+                        <span class="p-1.5 rounded-lg bg-amber-50 text-amber-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        </span>
+                    </div>
+                    <div class="mt-2 flex items-baseline gap-2">
+                        <p class="text-xl sm:text-2xl font-extrabold text-amber-600 tracking-tight" id="metric-unused-count">0</p>
+                        <span class="text-xs text-slate-500 font-medium">Flagged Items</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Overlapping or zero utility</p>
+                </div>
+
+                <!-- Metric 4 -->
+                <div class="bg-artefact-dark rounded-2xl p-3.5 sm:p-4 border border-artefact-dark shadow-soft flex flex-col justify-between text-white hover:bg-artefact-dark/95 transition">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-emerald-300 uppercase tracking-wider">Potential Annual ROI</span>
+                        <span class="p-1.5 rounded-lg bg-emerald-900/50 text-emerald-300 border border-emerald-700/50">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-xl sm:text-2xl font-extrabold text-emerald-400 tracking-tight" id="metric-annual-savings">₹0</p>
+                        <p class="text-[11px] text-emerald-200/70 mt-0.5">Compounded 12-month value</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
+
+        <!-- Top Row: 3 Responsive Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+            <!-- CARD 1: SWITCHSIM AI -->
+             <div id="switchsim" class="bg-white rounded-3xl p-5 sm:p-6 border border-artefact-border shadow-soft flex flex-col justify-between hover:shadow-hover transition-all duration-300">
+                <div>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2.5 rounded-2xl bg-emerald-50 text-emerald-700 font-bold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-lg text-artefact-dark leading-tight">SwitchSim AI</h2>
+                                <p class="text-xs text-slate-500">1:1 Alternative Software Switcher</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-full">Tool 01</span>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="space-y-3.5 mb-5">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Current Suite / Tool</label>
+                            <select id="switch-current" onchange="runSwitchSim()" class="w-full bg-slate-50 border border-slate-200 text-artefact-dark text-xs rounded-xl p-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 font-medium">
+                                <option value="adobe-cc">Adobe Creative Cloud Suite</option>
+                                <option value="cinema4d">Cinema 4D + Redshift Render</option>
+                                <option value="protools">Pro Tools Ultimate Subscription</option>
+                                <option value="sketch-invision">Sketch + InVision Enterprise</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Target Alternative</label>
+                                <select id="switch-target" onchange="runSwitchSim()" class="w-full bg-slate-50 border border-slate-200 text-artefact-dark text-xs rounded-xl p-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 font-medium">
+                                    <!-- Options populated dynamically -->
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Yearly Cost (₹)</label>
+                                <input type="number" id="switch-cost" value="28728" oninput="runSwitchSim()" class="w-full bg-slate-50 border border-slate-200 text-artefact-dark text-xs rounded-xl p-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 font-semibold" placeholder="₹ per year">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Report Container -->
+                    <div id="switchsim-report" class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-3">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-400">AI Confidence: <strong class="text-slate-600">96.4%</strong></span>
+                    <button onclick="applySwitchSimSavings()" id="switchsim-cta" class="px-3.5 py-1.5 text-xs font-bold text-white bg-artefact-dark hover:bg-emerald-900 rounded-xl transition shadow-sm flex items-center gap-1">
+                        <span>Apply Recommendation</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 2: AI WORKFLOW REBUILDER -->
+             <div id="rebuilder" class="bg-white rounded-3xl p-5 sm:p-6 border border-artefact-border shadow-soft flex flex-col justify-between hover:shadow-hover transition-all duration-300">
+                <div>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2.5 rounded-2xl bg-indigo-50 text-indigo-700 font-bold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-lg text-artefact-dark leading-tight">AI Workflow Rebuilder</h2>
+                                <p class="text-xs text-slate-500">Unbundle Legacy Proprietary Stacks</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-700 bg-indigo-100/80 px-2.5 py-1 rounded-full">Tool 02</span>
+                    </div>
+
+                    <!-- Niche Selector -->
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Target Creative Niche</label>
+                        <select id="rebuilder-niche" onchange="runWorkflowRebuilder()" class="w-full bg-slate-50 border border-slate-200 text-artefact-dark text-xs rounded-xl p-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 font-semibold">
+                            <option value="illustration-animation" selected>Illustration + Motion + Video (User Stack)</option>
+                            <option value="3d-vfx">3D Modeling, Texturing & VFX</option>
+                            <option value="ui-ux">UI/UX Design & Interactive Prototyping</option>
+                        </select>
+                    </div>
+
+                    <!-- Rebuild Analysis Card -->
+                    <div id="rebuilder-output" class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-3">
+                        <!-- Dynamic output from JS -->
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-[11px] text-slate-400">Open-Source Match</span>
+                    <button onclick="acceptWorkflowRebuild()" class="px-3.5 py-1.5 text-xs font-bold text-indigo-900 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl transition flex items-center gap-1">
+                        <span>Adopt Modular Stack</span>
+                        <svg class="w-3.5 h-3.5 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- CARD 3: SUBSCRIPTION WASTE DETECTOR -->
+             <div id="waste" class="bg-white rounded-3xl p-5 sm:p-6 border border-artefact-border shadow-soft flex flex-col justify-between hover:shadow-hover transition-all duration-300">
+                <div>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-2.5 rounded-2xl bg-amber-50 text-amber-700 font-bold">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-lg text-artefact-dark leading-tight">Waste Detector</h2>
+                                <p class="text-xs text-slate-500">Live Active Subscriptions</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100/80 px-2.5 py-1 rounded-full">Tool 03</span>
+                    </div>
+
+                    <!-- Add Sub Inline Bar -->
+                    <div class="flex gap-1.5 mb-3">
+                        <input type="text" id="add-sub-name" placeholder="Tool Name" class="w-1/2 bg-slate-50 border border-slate-200 text-xs rounded-xl px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400">
+                        <input type="number" id="add-sub-cost" placeholder="₹/mo" class="w-1/4 bg-slate-50 border border-slate-200 text-xs rounded-xl px-2 py-1.5 focus:outline-none focus:ring-1 focus:ring-slate-400">
+                        <button onclick="addNewSubscription()" class="w-1/4 bg-artefact-dark text-white rounded-xl text-xs font-bold hover:bg-emerald-900 transition flex items-center justify-center gap-1">
+                            <span>+ Add</span>
+                        </button>
+                    </div>
+
+                    <!-- Subscriptions List -->
+                    <div id="subscription-list-container" class="space-y-2 max-h-[220px] overflow-y-auto pr-1 custom-scrollbar">
+                        <!-- Dynamic items -->
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                    <span class="text-slate-500">Auto-Purge Savings:</span>
+                    <span class="font-extrabold text-emerald-600 text-sm" id="purge-savings-display">₹0 / mo</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Row: 2 Larger High-Impact Cards -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- CARD 4: SKILL-TO-SOFTWARE TRANSLATOR -->
+             <div id="translator" class="bg-white rounded-3xl p-6 border border-artefact-border shadow-soft hover:shadow-hover transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 rounded-2xl bg-teal-50 text-teal-700 font-bold">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-xl text-artefact-dark">Skill-to-Software Translator</h2>
+                                <p class="text-xs text-slate-500">Leverage existing creative mastery to zero-cost toolstacks</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-teal-700 bg-teal-100/80 px-2.5 py-1 rounded-full">Tool 04</span>
+                    </div>
+
+                    <!-- Active Skills Chips -->
+                    <div class="mb-5">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-semibold text-slate-600">Select Your Core Skills:</span>
+                            <span class="text-[11px] text-slate-400">Toggle chips to filter matrix</span>
+                        </div>
+                        <div id="skills-chips-container" class="flex flex-wrap gap-1.5">
+                            <!-- Skill chips populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Skill Transfer Mapping Output Table -->
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80">
+                        <div class="flex items-center justify-between mb-3 text-xs font-bold text-slate-500 uppercase tracking-wider">
+                            <span>Target Alternative Software</span>
+                            <span>Skill Transfer Compatibility</span>
+                        </div>
+                        <div id="skill-translator-results" class="space-y-3">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span class="flex items-center gap-1">
+                        <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                        High skill overlap minimizes learning curve to &lt; 5 days
+                    </span>
+                    <span class="font-bold text-artefact-dark">Average ROI: +₹18,500/yr</span>
+                </div>
+            </div>
+
+            <!-- CARD 5: SUBSCRIPTION SCENARIO SIMULATOR -->
+             <div id="simulator" class="bg-white rounded-3xl p-6 border border-artefact-border shadow-soft hover:shadow-hover transition-all duration-300 flex flex-col justify-between">
+                <div>
+                    <!-- Header -->
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="p-2.5 rounded-2xl bg-purple-50 text-purple-700 font-bold">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-xl text-artefact-dark">Subscription Scenario Simulator</h2>
+                                <p class="text-xs text-slate-500">Tier-based optimal stack benchmarks & budgets</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-purple-700 bg-purple-100/80 px-2.5 py-1 rounded-full">Tool 05</span>
+                    </div>
+
+                    <!-- 3 Tabs Navigation -->
+                    <div class="flex p-1 bg-slate-100 rounded-2xl mb-5">
+                        <button onclick="switchScenarioTab('STUDENT')" id="tab-STUDENT" class="flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600">
+                            [STUDENT]
+                        </button>
+                        <button onclick="switchScenarioTab('FREELANCER')" id="tab-FREELANCER" class="flex-1 py-2 text-xs font-bold rounded-xl transition bg-white text-artefact-dark shadow-sm">
+                            [FREELANCER]
+                        </button>
+                        <button onclick="switchScenarioTab('BUSINESS')" id="tab-BUSINESS" class="flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600">
+                            [BUSINESS OWNER]
+                        </button>
+                    </div>
+
+                    <!-- Tab Display Content Container -->
+                    <div id="scenario-tab-content" class="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between">
+                    <div class="text-xs">
+                        <span class="text-slate-400">Stack Efficiency Score: </span>
+                        <span class="font-extrabold text-emerald-600" id="scenario-efficiency">94/100</span>
+                    </div>
+                    <button onclick="applyScenarioStack()" class="px-4 py-2 text-xs font-bold text-white bg-artefact-dark hover:bg-emerald-900 rounded-xl transition shadow-sm flex items-center gap-1.5">
+                        <span>Load Tab Preset To Dashboard</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- JavaScript Logic & State Management -->
+    <script>
+        // --- GLOBAL APP STATE ---
+        const state = {
+            subscriptions: [
+                { id: 1, name: "Adobe Creative Cloud", cost: 2394, freq: "month", status: "Overlapping", category: "warning" },
+                { id: 2, name: "Canva Pro", cost: 499, freq: "month", status: "Rarely Used", category: "danger" },
+                { id: 3, name: "Envato Elements", cost: 1299, freq: "month", status: "Frequently Used", category: "success" },
+                { id: 4, name: "Spotify Premium", cost: 119, freq: "month", status: "Frequently Used", category: "success" },
+                { id: 5, name: "Netflix", cost: 199, freq: "month", status: "Not Used", category: "danger" }
+            ],
+            switchSimAppliedSavings: 0,
+            activeSkills: ["Motion Graphics", "Layer Based Editing", "2D Animation", "Compositing", "Video Editing", "3D Modeling", "Illustration", "UI Design"],
+            activeScenarioTab: "FREELANCER"
+        };
+
+        // --- SWITCHSIM AI DATA PRESETS ---
+        const switchSimData = {
+            "adobe-cc": {
+                name: "Adobe Creative Cloud",
+                targets: [
+                    { id: "davinci-affinity", name: "DaVinci Resolve + Affinity Suite + Figma", cost: 0, match: 92, effort: 60, effortLabel: "Moderate (approx. 5 days)" },
+                    { id: "blender-krita", name: "Blender + Krita + Inkscape", cost: 0, match: 85, effort: 75, effortLabel: "Steep (approx. 12 days)" }
+                ]
+            },
+            "cinema4d": {
+                name: "Cinema 4D + Redshift",
+                targets: [
+                    { id: "blender-octane", name: "Blender 4.0 + Octane Prime (Free)", cost: 0, match: 89, effort: 50, effortLabel: "Low-Moderate (approx. 4 days)" }
+                ]
+            },
+            "protools": {
+                name: "Pro Tools Ultimate",
+                targets: [
+                    { id: "reaper-daw", name: "Reaper DAW (Discounted Commercial)", cost: 500, match: 96, effort: 30, effortLabel: "Low (approx. 2 days)" }
+                ]
+            },
+            "sketch-invision": {
+                name: "Sketch + InVision",
+                targets: [
+                    { id: "penpot-figma", name: "Penpot (Open Source) + Figma Free", cost: 0, match: 98, effort: 15, effortLabel: "Seamless (1 day)" }
+                ]
+            }
+        };
+
+        // --- WORKFLOW REBUILDER DATA ---
+        const workflowData = {
+            "illustration-animation": {
+                title: "Illustration + Animation + Video Stack",
+                beforeCost: 2394,
+                beforeItems: ["Photoshop", "Illustrator", "After Effects", "Premiere Pro"],
+                afterItems: [
+                    { name: "Krita / Inkscape", tag: "Illustration & Vector", cost: "Free / Open Source" },
+                    { name: "Cavalry / Blender 2D", tag: "Motion & Animation", cost: "Free Tier" },
+                    { name: "DaVinci Resolve", tag: "NLE Video Editing", cost: "Free Studio Tier" }
+                ],
+                afterCost: 0,
+                monthlySaving: 2394
+            },
+            "3d-vfx": {
+                title: "3D Asset Design & Render Pipeline",
+                beforeCost: 7000,
+                beforeItems: ["Autodesk Maya", "Substance Painter", "Redshift"],
+                afterItems: [
+                    { name: "Blender 4.2 LTS", tag: "Modeling & Animation", cost: "Free / Open Source" },
+                    { name: "ArmorPaint / Quixel", tag: "Texturing", cost: "Free / Community" }
+                ],
+                afterCost: 0,
+                monthlySaving: 7000
+            },
+            "ui-ux": {
+                title: "UI/UX Product Design Stack",
+                beforeCost: 3500,
+                beforeItems: ["Adobe XD", "InVision Enterprise", "Zeplin"],
+                afterItems: [
+                    { name: "Figma Free Tier", tag: "Interface Design", cost: "Free" },
+                    { name: "Penpot Open Source", tag: "Self-Hosted Specs", cost: "Free" }
+                ],
+                afterCost: 0,
+                monthlySaving: 3500
+            }
+        };
+
+        // --- SKILL TRANSLATOR MATRIX ---
+        const softwareSkillMap = [
+            {
+                name: "DaVinci Resolve Studio & Fusion",
+                cost: "₹0 / Free Edition",
+                requiredSkills: ["Video Editing", "Compositing", "Motion Graphics", "Layer Based Editing"],
+                savings: "₹1,200/mo",
+                accent: "emerald"
+            },
+            {
+                name: "Blender 3D & Grease Pencil",
+                cost: "₹0 / Open Source",
+                requiredSkills: ["3D Modeling", "2D Animation", "Motion Graphics", "Compositing"],
+                savings: "₹2,800/mo",
+                accent: "amber"
+            },
+            {
+                name: "Krita & Inkscape Vector Studio",
+                cost: "₹0 / Free",
+                requiredSkills: ["Illustration", "UI Design", "Layer Based Editing"],
+                savings: "₹899/mo",
+                accent: "blue"
+            },
+            {
+                name: "Figma & Penpot",
+                cost: "₹0 / Starter Tier",
+                requiredSkills: ["UI Design", "Illustration", "Layer Based Editing"],
+                savings: "₹1,500/mo",
+                accent: "purple"
+            }
+        ];
+
+        // --- SCENARIO SIMULATOR DATA ---
+        const scenarioData = {
+            STUDENT: {
+                title: "Student / Self-Taught Creator",
+                budget: "₹1,000 / month",
+                industryStandardCost: 4500,
+                actualCost: 59,
+                efficiency: "96/100",
+                stack: [
+                    { name: "Blender & DaVinci Resolve", badge: "Free" },
+                    { name: "Figma Starter & Notion", badge: "Free" },
+                    { name: "Spotify Student Tier", badge: "₹59/mo" }
+                ],
+                recommendation: "100% compliant with university pipelines at under 2% of commercial software costs."
+            },
+            FREELANCER: {
+                title: "Solo Creative Freelancer",
+                budget: "₹8,000 / month",
+                industryStandardCost: 12500,
+                actualCost: 3199,
+                efficiency: "92/100",
+                stack: [
+                    { name: "Affinity Suite (Perpetual License)", badge: "₹0/mo" },
+                    { name: "Envato Elements", badge: "₹1,299/mo" },
+                    { name: "Frame.io Pro + Google Workspace", badge: "₹1,900/mo" }
+                ],
+                recommendation: "High-value asset workflow unburdened by heavy monthly software debt."
+            },
+            BUSINESS: {
+                title: "Boutique Creative Agency (5 Seats)",
+                budget: "₹35,000 / month",
+                industryStandardCost: 55000,
+                actualCost: 24500,
+                efficiency: "88/100",
+                stack: [
+                    { name: "Figma Organization (3 Seats)", badge: "₹8,000/mo" },
+                    { name: "Adobe Core Seats (Select)", badge: "₹11,500/mo" },
+                    { name: "Slack Pro & AWS Backup", badge: "₹5,000/mo" }
+                ],
+                recommendation: "Hybrid stack saving ₹3,66,000 annually across 5 team seats."
+            }
+        };
+
+        // --- INITIALIZATION ---
+        document.addEventListener("DOMContentLoaded", () => {
+            initSwitchSimDropdown();
+            runSwitchSim();
+            runWorkflowRebuilder();
+            renderSubscriptions();
+            renderSkillTranslator();
+            switchScenarioTab('FREELANCER');
+            updateGlobalMetrics();
+        });
+
+        // --- TOAST NOTIFICATION UTILITY ---
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded-2xl shadow-lg border text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2 ${
+                type === 'success' 
+                    ? 'bg-artefact-dark text-white border-emerald-500/30' 
+                    : 'bg-amber-500 text-white border-amber-600'
+            }`;
+            toast.innerHTML = `
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span>${message}</span>
+            `;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', '-translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- GLOBAL METRICS CALCULATOR & ANIMATOR ---
+        function updateGlobalMetrics() {
+            // 1. Calculate Monthly Spend
+            const activeMonthlyTotal = state.subscriptions.reduce((sum, item) => sum + item.cost, 0);
+
+            // 2. Calculate Monthly Savings from Waste Detector (Overlapping + Rarely Used + Not Used)
+            const wasteMonthly = state.subscriptions
+                .filter(item => item.category === 'danger' || item.category === 'warning')
+                .reduce((sum, item) => sum + item.cost, 0);
+
+            // 3. Count Unused/Waste Items
+            const wasteCount = state.subscriptions.filter(item => item.category === 'danger' || item.category === 'warning').length;
+
+            // 4. Combined Potential Monthly & Annual Savings
+            const totalMonthlyPotentialSavings = wasteMonthly + (state.switchSimAppliedSavings / 12);
+            const totalAnnualSavings = (totalMonthlyPotentialSavings * 12);
+
+            // Animate values
+            animateNumber('metric-monthly-spend', activeMonthlyTotal, '₹');
+            animateNumber('metric-monthly-savings', totalMonthlyPotentialSavings, '₹');
+            animateNumber('metric-unused-count', wasteCount, '');
+            animateNumber('metric-annual-savings', totalAnnualSavings, '₹');
+
+            document.getElementById('purge-savings-display').textContent = `₹${wasteMonthly.toLocaleString('en-IN')} / mo`;
+            
+            const subLabel = document.getElementById('metric-monthly-savings-sub');
+            if (state.switchSimAppliedSavings > 0) {
+                subLabel.textContent = `Includes +₹${Math.round(state.switchSimAppliedSavings/12).toLocaleString('en-IN')}/mo SwitchSim AI`;
+            } else {
+                subLabel.textContent = `Optimizable monthly leakage`;
+            }
+        }
+
+        function animateNumber(elementId, targetValue, prefix = '') {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+
+            const startValue = parseInt(el.textContent.replace(/[^0-9]/g, '')) || 0;
+            const duration = 500;
+            const startTime = performance.now();
+
+            function step(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+                
+                el.textContent = `${prefix}${currentValue.toLocaleString('en-IN')}`;
+
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    el.textContent = `${prefix}${Math.round(targetValue).toLocaleString('en-IN')}`;
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        // --- TOOL 1: SWITCHSIM AI FUNCTIONS ---
+        function initSwitchSimDropdown() {
+            const currentSelect = document.getElementById('switch-current');
+            const targetSelect = document.getElementById('switch-target');
+            
+            const selectedKey = currentSelect.value;
+            const options = switchSimData[selectedKey].targets;
+
+            targetSelect.innerHTML = options.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+        }
+
+        document.getElementById('switch-current').addEventListener('change', () => {
+            initSwitchSimDropdown();
+            runSwitchSim();
+        });
+
+        function runSwitchSim() {
+            const currentKey = document.getElementById('switch-current').value;
+            const targetId = document.getElementById('switch-target').value;
+            const costInput = parseFloat(document.getElementById('switch-cost').value) || 0;
+
+            const targetObj = switchSimData[currentKey].targets.find(t => t.id === targetId) || switchSimData[currentKey].targets[0];
+            const annualSavings = Math.max(0, costInput - targetObj.cost);
+
+            const reportContainer = document.getElementById('switchsim-report');
+            reportContainer.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Estimated Annual Savings</span>
+                        <span class="text-xl font-extrabold text-emerald-600">₹${annualSavings.toLocaleString('en-IN')} / yr</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Feature Match</span>
+                        <span class="text-base font-extrabold text-artefact-dark">${targetObj.match}%</span>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="flex justify-between text-xs mb-1">
+                        <span class="font-semibold text-slate-600">Learning Curve Effort:</span>
+                        <span class="font-bold text-artefact-dark">${targetObj.effortLabel}</span>
+                    </div>
+                    <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                        <div class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: ${targetObj.effort}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function applySwitchSimSavings() {
+            const costInput = parseFloat(document.getElementById('switch-cost').value) || 0;
+            const currentKey = document.getElementById('switch-current').value;
+            const targetId = document.getElementById('switch-target').value;
+            const targetObj = switchSimData[currentKey].targets.find(t => t.id === targetId);
+
+            state.switchSimAppliedSavings = Math.max(0, costInput - targetObj.cost);
+            updateGlobalMetrics();
+            showToast(`Applied SwitchSim AI: Saved ₹${state.switchSimAppliedSavings.toLocaleString('en-IN')}/yr`);
+        }
+
+        // --- TOOL 2: AI WORKFLOW REBUILDER FUNCTIONS ---
+        function runWorkflowRebuilder() {
+            const nicheKey = document.getElementById('rebuilder-niche').value;
+            const data = workflowData[nicheKey];
+            const container = document.getElementById('rebuilder-output');
+
+            container.innerHTML = `
+                <div class="border-b border-slate-200 pb-2.5">
+                    <div class="flex justify-between items-center text-xs mb-1">
+                        <span class="font-bold text-slate-400 uppercase">Legacy Suite Cost:</span>
+                        <span class="font-bold text-slate-600 line-through">₹${data.beforeCost.toLocaleString('en-IN')}/mo</span>
+                    </div>
+                    <p class="text-xs text-slate-600 font-medium">Included: ${data.beforeItems.join(', ')}</p>
+                </div>
+
+                <div>
+                    <span class="text-[11px] font-bold text-indigo-900 uppercase tracking-wider block mb-2">Optimized Open-Source Stack:</span>
+                    <div class="space-y-1.5">
+                        ${data.afterItems.map(item => `
+                            <div class="flex items-center justify-between text-xs bg-white p-2 rounded-xl border border-slate-200/60 shadow-2xs">
+                                <div>
+                                    <span class="font-bold text-artefact-dark block">${item.name}</span>
+                                    <span class="text-[10px] text-slate-400">${item.tag}</span>
+                                </div>
+                                <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">${item.cost}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="pt-2 flex justify-between items-center bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100">
+                    <span class="text-xs font-bold text-indigo-950">Net Stack Optimization:</span>
+                    <span class="text-xs font-extrabold text-emerald-600">+₹${data.monthlySaving.toLocaleString('en-IN')} / mo</span>
+                </div>
+            `;
+        }
+
+        function acceptWorkflowRebuild() {
+            const nicheKey = document.getElementById('rebuilder-niche').value;
+            const data = workflowData[nicheKey];
+            
+            // Add primary replacement savings into global state
+            state.switchSimAppliedSavings += (data.monthlySaving * 12);
+            updateGlobalMetrics();
+            showToast(`Workflow Rebuilder stack adopted! Savings updated.`);
+        }
+
+        // --- TOOL 3: SUBSCRIPTION WASTE DETECTOR FUNCTIONS ---
+        function renderSubscriptions() {
+            const container = document.getElementById('subscription-list-container');
+            container.innerHTML = '';
+
+            state.subscriptions.forEach((sub) => {
+                const itemEl = document.createElement('div');
+                itemEl.className = 'flex items-center justify-between p-2.5 bg-slate-50 hover:bg-slate-100/80 rounded-2xl border border-slate-200/70 transition';
+                
+                let badgeClass = 'bg-slate-200 text-slate-700';
+                if (sub.category === 'danger') badgeClass = 'bg-red-100 text-red-700 border-red-200';
+                if (sub.category === 'warning') badgeClass = 'bg-amber-100 text-amber-800 border-amber-200';
+                if (sub.category === 'success') badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+
+                itemEl.innerHTML = `
+                    <div class="flex items-center gap-2.5">
+                        <button onclick="deleteSubscription(${sub.id})" class="text-slate-300 hover:text-red-500 transition p-1" title="Remove Tool">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        </button>
+                        <div>
+                            <p class="text-xs font-bold text-artefact-dark leading-tight">${sub.name}</p>
+                            <span class="text-[10px] font-semibold px-2 py-0.2 rounded-full border inline-block mt-0.5 ${badgeClass}">
+                                ${sub.status}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-extrabold text-artefact-dark">₹${sub.cost.toLocaleString('en-IN')}</p>
+                        <p class="text-[10px] text-slate-400">/${sub.freq}</p>
+                    </div>
+                `;
+                container.appendChild(itemEl);
+            });
+
+            updateGlobalMetrics();
+        }
+
+        function addNewSubscription() {
+            const nameInput = document.getElementById('add-sub-name');
+            const costInput = document.getElementById('add-sub-cost');
+
+            const name = nameInput.value.trim();
+            const cost = parseFloat(costInput.value);
+
+            if (!name || isNaN(cost) || cost <= 0) {
+                showToast("Please enter a valid tool name & monthly cost.", "warning");
+                return;
+            }
+
+            const newSub = {
+                id: Date.now(),
+                name: name,
+                cost: cost,
+                freq: "month",
+                status: "Newly Added",
+                category: "warning"
+            };
+
+            state.subscriptions.unshift(newSub);
+            nameInput.value = '';
+            costInput.value = '';
+            
+            renderSubscriptions();
+            showToast(`Added ${name} (₹${cost}/mo) to active tracking.`);
+        }
+
+        function deleteSubscription(id) {
+            const index = state.subscriptions.findIndex(s => s.id === id);
+            if (index !== -1) {
+                const removed = state.subscriptions.splice(index, 1)[0];
+                renderSubscriptions();
+                showToast(`Purged subscription: ${removed.name}`);
+            }
+        }
+
+        // --- TOOL 4: SKILL-TO-SOFTWARE TRANSLATOR ---
+        function renderSkillTranslator() {
+            const chipsContainer = document.getElementById('skills-chips-container');
+            const resultsContainer = document.getElementById('skill-translator-results');
+
+            // Render Chip Selectors
+            const allSkills = ["Motion Graphics", "Layer Based Editing", "2D Animation", "Compositing", "Video Editing", "3D Modeling", "Illustration", "UI Design"];
+            
+            chipsContainer.innerHTML = allSkills.map(skill => {
+                const isSelected = state.activeSkills.includes(skill);
+                return `
+                    <button onclick="toggleSkill('${skill}')" class="px-2.5 py-1 rounded-xl text-xs font-semibold transition-all duration-200 ${
+                        isSelected 
+                            ? 'bg-artefact-dark text-white shadow-xs' 
+                            : 'bg-slate-100 text-slate-500 hover:bg-slate-200'
+                    }">
+                        ${isSelected ? '✓ ' : '+ '}${skill}
+                    </button>
+                `;
+            }).join('');
+
+            // Filter & Rank Software based on selected skills
+            resultsContainer.innerHTML = '';
+
+            softwareSkillMap.forEach(soft => {
+                // Calculate match percentage
+                const matchingSkills = soft.requiredSkills.filter(s => state.activeSkills.includes(s));
+                const matchScore = Math.round((matchingSkills.length / soft.requiredSkills.length) * 100);
+
+                if (matchScore > 0) {
+                    const el = document.createElement('div');
+                    el.className = 'flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200/80 hover:border-teal-300 transition shadow-2xs';
+                    el.innerHTML = `
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <h4 class="text-xs font-bold text-artefact-dark">${soft.name}</h4>
+                                <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-medium">${soft.cost}</span>
+                            </div>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <span class="text-[10px] text-slate-400">Matched Skills:</span>
+                                ${matchingSkills.map(s => `<span class="text-[9px] bg-teal-50 text-teal-700 px-1.5 py-0.3 rounded">${s}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="text-right flex items-center gap-3">
+                            <div>
+                                <span class="text-xs font-extrabold text-teal-700 block">${matchScore}%</span>
+                                <span class="text-[9px] text-slate-400 block uppercase">Match</span>
+                            </div>
+                            <div class="w-12 bg-slate-100 h-2 rounded-full overflow-hidden hidden sm:block">
+                                <div class="bg-teal-500 h-2 rounded-full" style="width: ${matchScore}%"></div>
+                            </div>
+                        </div>
+                    `;
+                    resultsContainer.appendChild(el);
+                }
+            });
+
+            if (resultsContainer.children.length === 0) {
+                resultsContainer.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">Select skills above to generate alternative software matches.</p>`;
+            }
+        }
+
+        function toggleSkill(skill) {
+            if (state.activeSkills.includes(skill)) {
+                state.activeSkills = state.activeSkills.filter(s => s !== skill);
+            } else {
+                state.activeSkills.push(skill);
+            }
+            renderSkillTranslator();
+        }
+
+        // --- TOOL 5: SCENARIO SIMULATOR FUNCTIONS ---
+        function switchScenarioTab(tabKey) {
+            state.activeScenarioTab = tabKey;
+            
+            ['STUDENT', 'FREELANCER', 'BUSINESS'].forEach(key => {
+                const btn = document.getElementById(`tab-${key}`);
+                if (key === tabKey) {
+                    btn.className = "flex-1 py-2 text-xs font-bold rounded-xl transition bg-white text-artefact-dark shadow-sm";
+                } else {
+                    btn.className = "flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:text-artefact-dark";
+                }
+            });
+
+            const data = scenarioData[tabKey];
+            const contentContainer = document.getElementById('scenario-tab-content');
+            document.getElementById('scenario-efficiency').textContent = data.efficiency;
+
+            const delta = data.industryStandardCost - data.actualCost;
+
+            contentContainer.innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                    <div>
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Target Profile</h3>
+                        <p class="text-sm font-extrabold text-artefact-dark">${data.title}</p>
+                    </div>
+                    <div class="text-right">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Target Budget</h3>
+                        <p class="text-xs font-bold text-purple-700 bg-purple-100/60 px-2.5 py-1 rounded-lg inline-block">${data.budget}</p>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Curated Optimal Stack:</span>
+                    <div class="space-y-1.5">
+                        ${data.stack.map(item => `
+                            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-200/70 text-xs">
+                                <span class="font-bold text-artefact-dark">${item.name}</span>
+                                <span class="font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">${item.badge}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="bg-white p-3 rounded-xl border border-slate-200/80 flex items-center justify-between text-xs">
+                    <div>
+                        <span class="text-slate-400 block text-[10px] uppercase">Industry Standard Stack</span>
+                        <span class="text-slate-500 line-through font-bold">₹${data.industryStandardCost.toLocaleString('en-IN')}/mo</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-slate-400 block text-[10px] uppercase">Optimized Stack Monthly Delta</span>
+                        <span class="text-emerald-600 font-extrabold text-sm">+₹${delta.toLocaleString('en-IN')} / mo Saved</span>
+                    </div>
+                </div>
+
+                <p class="text-[11px] text-slate-500 italic bg-purple-50/50 p-2.5 rounded-xl border border-purple-100">
+                    💡 ${data.recommendation}
+                </p>
+            `;
+        }
+
+        function applyScenarioStack() {
+            const data = scenarioData[state.activeScenarioTab];
+            state.switchSimAppliedSavings += (data.industryStandardCost - data.actualCost) * 12;
+            updateGlobalMetrics();
+            showToast(`Loaded [${state.activeScenarioTab}] preset stack into baseline ROI calculations!`);
+        }
+
+        // RESET ALL DATA
+        function resetAllData() {
+            state.subscriptions = [
+                { id: 1, name: "Adobe Creative Cloud", cost: 2394, freq: "month", status: "Overlapping", category: "warning" },
+                { id: 2, name: "Canva Pro", cost: 499, freq: "month", status: "Rarely Used", category: "danger" },
+                { id: 3, name: "Envato Elements", cost: 1299, freq: "month", status: "Frequently Used", category: "success" },
+                { id: 4, name: "Spotify Premium", cost: 119, freq: "month", status: "Frequently Used", category: "success" },
+                { id: 5, name: "Netflix", cost: 199, freq: "month", status: "Not Used", category: "danger" }
+            ];
+            state.switchSimAppliedSavings = 0;
+            state.activeSkills = ["Motion Graphics", "Layer Based Editing", "2D Animation", "Compositing", "Video Editing", "3D Modeling", "Illustration", "UI Design"];
+            
+            renderSubscriptions();
+            renderSkillTranslator();
+            runSwitchSim();
+            runWorkflowRebuilder();
+             showToast("Reset stack & metrics to default state.");
+        }
+
+        const DEEP_LINK_TARGETS = {
+            switchsim: "switchsim",
+            rebuilder: "rebuilder",
+            waste: "waste",
+            translator: "translator",
+            simulator: "simulator"
+        };
+        function jumpToDeepLink() {
+            const hash = (location.hash || "").replace("#", "");
+            if (!hash || !DEEP_LINK_TARGETS[hash]) return;
+            const el = document.getElementById(DEEP_LINK_TARGETS[hash]);
+            if (!el) return;
+            el.scrollIntoView({ behavior: "smooth", block: "start" });
+            el.classList.add("ring-4", "ring-emerald-500/40");
+            setTimeout(() => el.classList.remove("ring-4", "ring-emerald-500/40"), 2600);
+        }
+        window.addEventListener("load", () => setTimeout(jumpToDeepLink, 700));
+        window.addEventListener("hashchange", () => setTimeout(jumpToDeepLink, 250));
+    </script>
+</body>
+</html>
