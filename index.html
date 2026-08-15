@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ALT. — AI-powered tool discovery for creators. Find your perfect tool.">
+  <meta property="og:title" content="ALT. — Discovery Engine">
+  <meta property="og:description" content="Find your perfect tool. AI-powered tool discovery for creators.">
+  <meta property="og:image" content="/alt-splash.png">
+  <link rel="icon" type="image/png" href="/alt-splash.png">
+  <title>ALT. — Discovery Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #5B43E0;
+      --primary-hover: #4A35C9;
+      --accent-blue: #4665ED;
+      --bg: #E4E8F3;
+      --card-bg: #F7F9FD;
+      --text-main: #1F2437;
+      --text-muted: #5B6178;
+      --border-subtle: #D8DCEE;
+      --star-color: #F59E0B;
+      --radius-card: 14px;
+      --shadow-sm: 0 2px 8px rgba(91, 67, 224, 0.06), 0 1px 3px rgba(31,36,55,0.03);
+      --shadow-md: 0 8px 24px rgba(91, 67, 224, 0.09), 0 2px 6px rgba(31,36,55,0.04);
+      --shadow-hover: 0 12px 28px rgba(91, 67, 224, 0.13), 0 4px 10px rgba(31,36,55,0.05);
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255,255,255,0.45), transparent);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 40px;
+    }
+
+    h1, h2, h3, .brand-font {
+      font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navbar */
+    .navbar-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247, 249, 253, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+      box-shadow: 0 2px 10px rgba(31, 36, 55, 0.03);
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 16px;
+    }
+
+    .brand {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .brand-dot {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 15px;
+      padding: 24px 0;
+      position: relative;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--primary);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .search-wrapper {
+      position: relative;
+      min-width: 0;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      stroke: var(--text-muted);
+      fill: none;
+      pointer-events: none;
+    }
+
+    .search-input {
+      background: #ECEEF8;
+      border: 1px solid transparent;
+      padding: 9px 16px 9px 40px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      width: 200px;
+      max-width: 42vw;
+      transition: var(--transition);
+      color: var(--text-main);
+    }
+
+    .search-input::placeholder {
+      color: #7A80A0;
+    }
+
+    .search-input:focus {
+      background: #FFFFFF;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(91, 67, 224, 0.15);
+      width: 240px;
+      max-width: 48vw;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #5B43E0 0%, #4665ED 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(91, 67, 224, 0.25);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 48px 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-overline {
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .hero-title {
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      box-shadow: 0 4px 14px rgba(91, 67, 224, 0.3);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(91, 67, 224, 0.35);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text-main);
+      border: 1px solid #D1D5DB;
+    }
+
+    .btn-ghost:hover {
+      background-color: #FFFFFF;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .rating-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .stars-group {
+      display: flex;
+      gap: 2px;
+      color: var(--star-color);
+    }
+
+    /* Chat Card */
+    .chat-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-subtle);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 380px;
+    }
+
+    .chat-header {
+      background: var(--primary);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .robot-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .online-indicator {
+      width: 10px;
+      height: 10px;
+      background-color: #10B981;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+
+    .chat-header-info {
+      flex: 1;
+    }
+
+    .chat-header-title {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .chat-header-sub {
+      font-size: 12px;
+      opacity: 0.85;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background: #FAF9FE;
+    }
+
+    .message-bubble {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.45;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .message-ai {
+      background: #FFFFFF;
+      color: var(--text-main);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .message-user {
+      background: var(--primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-input-row {
+      padding: 12px 16px;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .chat-input {
+      flex: 1;
+      border: 1px solid #E5E7EB;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .chat-input:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-send {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .btn-send:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Typing Dots */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 12px 16px;
+      background: #FFFFFF;
+      border-radius: 14px;
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      background: #9CA3AF;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1.0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Main Grid Layout */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 32px;
+      margin-top: 10px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .count-badge {
+      background: #E3E2F6;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 99px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Tools List */
+    .tools-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .tool-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      padding: 16px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: var(--transition);
+      min-width: 0;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+      border-color: #DDD8FB;
+    }
+
+    .tool-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .tool-tile {
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Gradient Variants for Tiles */
+    .tile-davinci { background: linear-gradient(135deg, #FF512F 0%, #DD2476 100%); }
+    .tile-capcut  { background: linear-gradient(135deg, #111827 0%, #374151 100%); }
+    .tile-shotcut { background: linear-gradient(135deg, #00B4DB 0%, #0083B0 100%); }
+    .tile-audacity { background: linear-gradient(135deg, #00C6FF 0%, #0072FF 100%); }
+    .tile-blender { background: linear-gradient(135deg, #FF8008 0%, #FFC837 100%); }
+    .tile-obs     { background: linear-gradient(135deg, #8E2DE2 0%, #4A00E0 100%); }
+
+    .tool-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .tool-name-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .tool-desc {
+      font-size: 12.5px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .tag-pills {
+      display: flex;
+      gap: 6px;
+      margin-top: 3px;
+    }
+
+    .tag-pill {
+      background: #E7E9F5;
+      color: #5B6178;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .tool-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .tool-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .btn-try {
+      background: #F3F0FE;
+      color: var(--primary);
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .btn-try:hover {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 4px 12px rgba(91, 67, 224, 0.25);
+    }
+
+    /* Sidebar Components */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .savings-card {
+      background: linear-gradient(135deg, #4665ED 0%, #3551D8 100%);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      color: white;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .savings-card::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 160px;
+      height: 160px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .savings-badge {
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 99px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .savings-title {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+
+    .savings-sub {
+      font-size: 13px;
+      opacity: 0.9;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .progress-container {
+      margin-bottom: 20px;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      opacity: 0.95;
+    }
+
+    .progress-bar-bg {
+      background: rgba(255, 255, 255, 0.25);
+      height: 8px;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      background: #FFFFFF;
+      height: 100%;
+      width: 0%;
+      border-radius: 99px;
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-claim {
+      background: white;
+      color: var(--accent-blue);
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .btn-claim:hover {
+      background: #F8FAFC;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .dna-panel {
+      background: var(--card-bg);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dna-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .dna-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .dna-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .dna-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dna-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .dna-label {
+      color: var(--text-main);
+    }
+
+    .dna-val {
+      color: var(--primary);
+    }
+
+    .dna-track {
+      background: #F3F4F6;
+      height: 6px;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .dna-fill {
+      background: var(--primary);
+      height: 100%;
+      width: 0%;
+      border-radius: 99px;
+      transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Empty state */
+    .no-results {
+      padding: 40px;
+      text-align: center;
+      color: var(--text-muted);
+      background: white;
+      border-radius: var(--radius-card);
+      border: 1px dashed var(--border-subtle);
+      display: none;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #111827;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 99px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Footer */
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      padding: 20px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        padding: 32px 0;
+      }
+      .main-grid {
+        grid-template-columns: 1fr;
+      }
+      .tools-list {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+      .hero-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .tool-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .tool-right {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 10px;
+      }
+      .search-input {
+        width: 140px;
+      }
+      .search-input:focus {
+        width: 170px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar-sticky">
+    <div class="container">
+      <nav class="navbar">
+        <a href="#" class="brand brand-font">alt<span class="brand-dot">.</span></a>
+        
+        <ul class="nav-links">
+          <li><a class="nav-link active" onclick="handleNavClick(this, 'recommendations')">Discover</a></li>
+          <li><a class="nav-link" onclick="handleNavClick(this, 'savings')">Savings</a></li>
+          <li><a class="nav-link" onclick="handleNavClick(this, 'community')">Community</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <div class="search-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+            </svg>
+            <input type="text" id="search-input" class="search-input" placeholder="Search tools..." oninput="filterTools()">
+          </div>
+          <div class="avatar" title="Your Profile">JD</div>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-left">
+        <span class="hero-overline">ALT. DISCOVERY ENGINE</span>
+        <h1 class="hero-title">Find your perfect tool.</h1>
+        <p class="hero-desc">From editing and design to AI and automation — discover tools matched to how you actually work.</p>
+        
+        <div class="hero-cta-group">
+          <button class="btn btn-primary" onclick="focusChat()">Ask Alt</button>
+          <button class="btn btn-ghost" onclick="scrollToElement('recommendations')">Explore top picks</button>
+        </div>
+
+        <div class="rating-row">
+          <div class="stars-group">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          </div>
+          <span>Rated 4.8/5 by 2,400+ creators</span>
+        </div>
+      </div>
+
+      <!-- Right Chat Card -->
+      <div class="chat-card">
+        <div class="chat-header">
+          <div class="robot-avatar">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+            <span class="online-indicator"></span>
+          </div>
+          <div class="chat-header-info">
+            <div class="chat-header-title">Ask Alt</div>
+            <div class="chat-header-sub">AI Tool Matchmaker</div>
+          </div>
+        </div>
+
+        <div class="chat-body" id="chat-body">
+          <div class="message-bubble message-ai">
+            Hi! I'm Alt — tell me what you're making and I'll match you with the best tools.
+          </div>
+        </div>
+
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" class="chat-input" placeholder="Type what you need..." onkeypress="handleChatKeyPress(event)">
+          <button class="btn-send" onclick="sendChatMessage()" title="Send">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="main-grid">
+      <!-- Left Main Column -->
+      <div id="recommendations">
+        <div class="section-header">
+          <h2 class="section-title">
+            Recommended for you
+            <span class="count-badge" id="tool-count">6 tools</span>
+          </h2>
+        </div>
+
+        <div class="tools-list" id="tools-list">
+          
+          <!-- Tool 1 -->
+          <div class="tool-card" data-title="DaVinci Resolve" data-tags="Video Free">
+            <div class="tool-left">
+              <div class="tool-tile tile-davinci">D</div>
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">DaVinci Resolve</span>
+                </div>
+                <p class="tool-desc">Professional video editing, color grading and VFX, all free.</p>
+                <div class="tag-pills">
+                  <span class="tag-pill">Video</span>
+                  <span class="tag-pill">Free</span>
+                </div>
+              </div>
+            </div>
+            <div class="tool-right">
+              <div class="tool-rating">
+                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span>5.0</span>
+              </div>
+              <button class="btn-try" onclick="tryTool('DaVinci Resolve')">Try</button>
+            </div>
+          </div>
+
+          <!-- Tool 2 -->
+          <div class="tool-card" data-title="CapCut" data-tags="Video AI">
+            <div class="tool-left">
+              <div class="tool-tile tile-capcut">C</div>
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">CapCut</span>
+                </div>
+                <p class="tool-desc">All-in-one editing suite with AI captions, effects and templates.</p>
+                <div class="tag-pills">
+                  <span class="tag-pill">Video</span>
+                  <span class="tag-pill">AI</span>
+                </div>
+              </div>
+            </div>
+            <div class="tool-right">
+              <div class="tool-rating">
+                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span>4.7</span>
+              </div>
+              <button class="btn-try" onclick="tryTool('CapCut')">Try</button>
+            </div>
+          </div>
+
+          <!-- Tool 3 -->
+          <div class="tool-card" data-title="Shotcut" data-tags="Video Open Source">
+            <div class="tool-left">
+              <div class="tool-tile tile-shotcut">S</div>
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">Shotcut</span>
+                </div>
+                <p class="tool-desc">Open-source cross-platform editor, endless format support.</p>
+                <div class="tag-pills">
+                  <span class="tag-pill">Video</span>
+                  <span class="tag-pill">Open Source</span>
+                </div>
+              </div>
+            </div>
+            <div class="tool-right">
+              <div class="tool-rating">
+                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span>4.5</span>
+              </div>
+              <button class="btn-try" onclick="tryTool('Shotcut')">Try</button>
+            </div>
+          </div>
+
+          <!-- Tool 4 -->
+          <div class="tool-card" data-title="Audacity" data-tags="Audio Free">
+            <div class="tool-left">
+              <div class="tool-tile tile-audacity">A</div>
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">Audacity</span>
+                </div>
+                <p class="tool-desc">Free multitrack audio editor for podcasts and music.</p>
+                <div class="tag-pills">
+                  <span class="tag-pill">Audio</span>
+                  <span class="tag-pill">Free</span>
+                </div>
+              </div>
+            </div>
+            <div class="tool-right">
+              <div class="tool-rating">
+                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span>4.6</span>
+              </div>
+              <button class="btn-try" onclick="tryTool('Audacity')">Try</button>
+            </div>
+          </div>
+
+          <!-- Tool 5 -->
+          <div class="tool-card" data-title="Blender" data-tags="3D Free">
+            <div class="tool-left">
+              <div class="tool-tile tile-blender">B</div>
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">Blender</span>
+                </div>
+                <p class="tool-desc">3D creation suite for modeling, animation and rendering.</p>
+                <div class="tag-pills">
+                  <span class="tag-pill">3D</span>
+                  <span class="tag-pill">Free</span>
+                </div>
+              </div>
+            </div>
+            <div class="tool-right">
+              <div class="tool-rating">
+                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span>4.8</span>
+              </div>
+              <button class="btn-try" onclick="tryTool('Blender')">Try</button>
+            </div>
+          </div>
+
+          <!-- Tool 6 -->
+          <div class="tool-card" data-title="OBS Studio" data-tags="Streaming Free">
+            <div class="tool-left">
+              <div class="tool-tile tile-obs">O</div>
+              <div class="tool-info">
+                <div class="tool-name-row">
+                  <span class="tool-name">OBS Studio</span>
+                </div>
+                <p class="tool-desc">Live streaming and screen recording, battle-tested.</p>
+                <div class="tag-pills">
+                  <span class="tag-pill">Streaming</span>
+                  <span class="tag-pill">Free</span>
+                </div>
+              </div>
+            </div>
+            <div class="tool-right">
+              <div class="tool-rating">
+                <svg width="14" height="14" fill="var(--star-color)" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <span>4.7</span>
+              </div>
+              <button class="btn-try" onclick="tryTool('OBS Studio')">Try</button>
+            </div>
+          </div>
+
+          <div class="no-results" id="no-results">
+            No tools match your search criteria. Try a different keyword!
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right Sidebar Column -->
+      <div class="sidebar">
+        <!-- Student Savings Card -->
+        <div class="savings-card" id="savings">
+          <span class="savings-badge">Student Savings</span>
+          <h3 class="savings-title">85% off Pro plans</h3>
+          <p class="savings-sub">Students save on every tool on ALT.</p>
+          
+          <div class="progress-container">
+            <div class="progress-labels">
+              <span>Progress</span>
+              <span>Joined 3 of 4 steps</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" id="student-progress" data-width="85%"></div>
+            </div>
+          </div>
+
+          <button class="btn-claim" onclick="showToast('Claiming student offer...')">Claim offer</button>
+        </div>
+
+        <!-- Your DNA Panel -->
+        <div class="dna-panel">
+          <div class="dna-header">
+            <svg width="20" height="20" fill="none" stroke="var(--primary)" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+            </svg>
+            <h3 class="dna-title">Your DNA</h3>
+          </div>
+
+          <div class="dna-rows">
+            <div class="dna-row">
+              <div class="dna-meta">
+                <span class="dna-label">Video Editor</span>
+                <span class="dna-val">92%</span>
+              </div>
+              <div class="dna-track">
+                <div class="dna-fill" data-width="92%"></div>
+              </div>
+            </div>
+
+            <div class="dna-row">
+              <div class="dna-meta">
+                <span class="dna-label">AI tools</span>
+                <span class="dna-val">78%</span>
+              </div>
+              <div class="dna-track">
+                <div class="dna-fill" data-width="78%"></div>
+              </div>
+            </div>
+
+            <div class="dna-row">
+              <div class="dna-meta">
+                <span class="dna-label">120h/week</span>
+                <span class="dna-val">85%</span>
+              </div>
+              <div class="dna-track">
+                <div class="dna-fill" data-width="85%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      alt<span class="brand-dot">.</span> — find your perfect tool.
+    </footer>
+  </main>
+
+  <!-- Floating Toast Notification -->
+  <div id="toast" class="toast">
+    <svg width="18" height="18" fill="none" stroke="#5B43E0" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <span id="toast-text">Notification message</span>
+  </div>
+
+  <script>
+    // Animate Progress Bars on Load
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        const fills = document.querySelectorAll('.progress-bar-fill, .dna-fill');
+        fills.forEach(fill => {
+          const targetWidth = fill.getAttribute('data-width');
+          if (targetWidth) {
+            fill.style.width = targetWidth;
+          }
+        });
+      }, 150);
+    });
+
+    // Chat functionality
+    function handleChatKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+
+      const chatBody = document.getElementById('chat-body');
+
+      // Append User Bubble
+      const userBubble = document.createElement('div');
+      userBubble.className = 'message-bubble message-user';
+      userBubble.textContent = text;
+      chatBody.appendChild(userBubble);
+
+      input.value = '';
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Show Typing Indicator
+      const typingIndicator = document.createElement('div');
+      typingIndicator.className = 'typing-indicator';
+      typingIndicator.id = 'active-typing';
+      typingIndicator.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+      chatBody.appendChild(typingIndicator);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Simulate AI Response after 800ms
+      setTimeout(() => {
+        const activeTyping = document.getElementById('active-typing');
+        if (activeTyping) {
+          activeTyping.remove();
+        }
+
+        const aiBubble = document.createElement('div');
+        aiBubble.className = 'message-bubble message-ai';
+        aiBubble.textContent = "Great pick! I'd start with DaVinci Resolve and CapCut — both free and top-rated. Want more like these?";
+        chatBody.appendChild(aiBubble);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 800);
+    }
+
+    function focusChat() {
+      const chatInput = document.getElementById('chat-input');
+      chatInput.focus();
+      chatInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // Try Tool Toast Action
+    let toastTimeout;
+    function tryTool(toolName) {
+      showToast(`Opening ${toolName}…`);
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      
+      toastText.textContent = message;
+      toast.classList.add('show');
+
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2200);
+    }
+
+    // Nav Item Click Handler
+    function handleNavClick(element, sectionId) {
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      element.classList.add('active');
+
+      if (sectionId === 'community') {
+        showToast('Community coming soon');
+      } else {
+        scrollToElement(sectionId);
+      }
+    }
+
+    function scrollToElement(id) {
+      const target = document.getElementById(id);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    // Live Search Filter
+    function filterTools() {
+      const query = document.getElementById('search-input').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.tool-card');
+      const noResults = document.getElementById('no-results');
+      const countBadge = document.getElementById('tool-count');
+      
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const title = card.getAttribute('data-title').toLowerCase();
+        const tags = card.getAttribute('data-tags').toLowerCase();
+        const desc = card.querySelector('.tool-desc').textContent.toLowerCase();
+
+        if (title.includes(query) || tags.includes(query) || desc.includes(query)) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      countBadge.textContent = `${visibleCount} ${visibleCount === 1 ? 'tool' : 'tools'}`;
+
+      if (visibleCount === 0) {
+        noResults.style.display = 'block';
+      } else {
+        noResults.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
