@@ -624,15 +624,9 @@
     <script>
         // --- GLOBAL APP STATE ---
         const state = {
-            subscriptions: [
-                { id: 1, name: "Adobe Creative Cloud", cost: 2394, freq: "month", status: "Overlapping", category: "warning" },
-                { id: 2, name: "Canva Pro", cost: 499, freq: "month", status: "Rarely Used", category: "danger" },
-                { id: 3, name: "Envato Elements", cost: 1299, freq: "month", status: "Frequently Used", category: "success" },
-                { id: 4, name: "Spotify Premium", cost: 119, freq: "month", status: "Frequently Used", category: "success" },
-                { id: 5, name: "Netflix", cost: 199, freq: "month", status: "Not Used", category: "danger" }
-            ],
+            subscriptions: [],
             switchSimAppliedSavings: 0,
-            activeSkills: ["Motion Graphics", "Layer Based Editing", "2D Animation", "Compositing", "Video Editing", "3D Modeling", "Illustration", "UI Design"],
+            activeSkills: [],
             activeScenarioTab: "FREELANCER"
         };
 
@@ -1061,6 +1055,14 @@
         function renderSubscriptions() {
             const container = document.getElementById('subscription-list-container');
             container.innerHTML = '';
+
+            if (state.subscriptions.length === 0) {
+                container.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-8 text-center border border-dashed border-slate-300 rounded-2xl bg-slate-50/50">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-1">No subscriptions yet</span>
+                        <p class="text-xs text-slate-500 max-w-[260px]">Add the software you pay for above — Alt will track spend, find waste, and simulate cheaper stacks.</p>
+                    </div>`;
+            }
 
             state.subscriptions.forEach((sub) => {
                 const itemEl = document.createElement('div');
