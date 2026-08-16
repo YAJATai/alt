@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ARTEFACTS — AI-powered optimization of software spending and discovery of cost-effective alternative workflows.">
-    <meta property="og:title" content="ARTEFACTS — Insights from Ideation">
+    <meta name="description" content="ALT. — Switch smarter. AI-powered optimization of software spending and discovery of cost-effective alternative workflows.">
+    <meta property="og:title" content="ALT. — Switch smarter · Dashboard">
     <meta property="og:description" content="Reduce software and subscription spending with AI-powered alternative workflows.">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23062C22'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='bold' fill='%23D1FAE5' text-anchor='middle'%3E%24%3C/text%3E%3C/svg%3E">
-    <title>ARTEFACTS — Insights from Ideation</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23FFC5DC'/%3E%3Cstop offset='1' stop-color='%23FD86DB'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='18' font-weight='bold' fill='%23161616' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
+    <title>ALT. — Switch smarter · Dashboard</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -75,11 +75,176 @@
             scroll-margin-top: 96px;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style id="alt-theme">
+        /* ================= ALT. DARK BRAND THEME ================= */
+        html { background: #0B0B0D; }
+
+        body {
+            background:
+                radial-gradient(640px 420px at 10% -4%, rgba(253, 134, 219, 0.10), transparent 62%),
+                radial-gradient(760px 540px at 100% 112%, rgba(16, 185, 129, 0.09), transparent 62%),
+                #0B0B0D !important;
+            color: #F4F4F6 !important;
+        }
+
+        /* Editorial serif for wordmark, card titles, headline figures */
+        .glass-header h1,
+        .rounded-3xl h2,
+        #metric-monthly-spend, #metric-monthly-savings, #metric-unused-count, #metric-annual-savings {
+            font-family: 'Times New Roman', Times, serif;
+            letter-spacing: -0.01em;
+        }
+
+        /* ---------- Header ---------- */
+        .glass-header {
+            background: rgba(11, 11, 13, 0.72) !important;
+            backdrop-filter: blur(14px) !important;
+            -webkit-backdrop-filter: blur(14px) !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+        .glass-header h1 {
+            background: linear-gradient(135deg, #ffc5dc 0%, #fd86db 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+        }
+
+        /* ---------- Neutral text ---------- */
+        .text-slate-300 { color: rgba(255, 255, 255, 0.85) !important; }
+        .text-slate-400 { color: rgba(255, 255, 255, 0.46) !important; }
+        .text-slate-500 { color: rgba(255, 255, 255, 0.58) !important; }
+        .text-slate-600 { color: rgba(255, 255, 255, 0.70) !important; }
+        .text-slate-700 { color: rgba(255, 255, 255, 0.82) !important; }
+
+        /* ---------- Surfaces ---------- */
+        .bg-white { background-color: #1A1A1E !important; }
+        .bg-slate-50 { background-color: #131317 !important; }
+        .bg-slate-100 { background-color: rgba(255, 255, 255, 0.07) !important; }
+        .bg-slate-200 { background-color: rgba(255, 255, 255, 0.14) !important; }
+
+        /* ---------- Borders ---------- */
+        .border-slate-100 { border-color: rgba(255, 255, 255, 0.06) !important; }
+        .border-slate-200 { border-color: rgba(255, 255, 255, 0.11) !important; }
+        .border-slate-200\/60, .border-slate-200\/70, .border-slate-200\/80 {
+            border-color: rgba(255, 255, 255, 0.10) !important;
+        }
+        .border-artefact-border, .border-artefact-border\/80 { border-color: rgba(255, 255, 255, 0.09) !important; }
+        .border-artefact-dark { border-color: rgba(255, 255, 255, 0.12) !important; }
+
+        /* ---------- Shadows / glows ---------- */
+        .shadow-soft { box-shadow: 0 8px 30px -6px rgba(0, 0, 0, 0.45) !important; }
+        .shadow-hover, .hover\:shadow-hover:hover {
+            box-shadow: 0 14px 40px -8px rgba(253, 134, 219, 0.16), 0 8px 24px -8px rgba(0, 0, 0, 0.5) !important;
+            border-color: rgba(253, 134, 219, 0.32) !important;
+        }
+        .hover\:border-emerald-200:hover { border-color: rgba(253, 134, 219, 0.45) !important; }
+
+        /* ---------- Brand actions: pink gradient + ink text ---------- */
+        .bg-artefact-dark { background-color: #232329 !important; color: #FFFFFF !important; }
+        .bg-artefact-dark.rounded-xl,
+        .bg-artefact-dark.text-white.shadow-xs {
+            background: linear-gradient(135deg, #ffc5dc 0%, #fd86db 100%) !important;
+            color: #161616 !important;
+        }
+        .hover\:bg-emerald-900:hover { background-color: rgba(253, 134, 219, 0.85) !important; color: #161616 !important; }
+
+        /* ---------- Metric 4 hero card (contains #metric-annual-savings) ---------- */
+        .bg-artefact-dark:has(#metric-annual-savings) {
+            background: linear-gradient(135deg, #ffc5dc 0%, #fd86db 100%) !important;
+            color: #161616 !important;
+            border-color: transparent !important;
+        }
+        .bg-artefact-dark:has(#metric-annual-savings) .text-emerald-300,
+        .bg-artefact-dark:has(#metric-annual-savings) .text-emerald-400,
+        .bg-artefact-dark:has(#metric-annual-savings) .text-emerald-200\/70 {
+            color: #161616 !important;
+        }
+        .bg-artefact-dark:has(#metric-annual-savings) .bg-emerald-900\/50 { background-color: rgba(22, 22, 22, 0.14) !important; }
+        .bg-artefact-dark:has(#metric-annual-savings) .border-emerald-700\/50 { border-color: rgba(22, 22, 22, 0.28) !important; }
+
+        /* ---------- Brand pill (header badge) ---------- */
+        .bg-artefact-accent-light { background: linear-gradient(135deg, #ffc5dc 0%, #fd86db 100%) !important; }
+        .bg-artefact-accent-light.text-artefact-dark { color: #161616 !important; }
+        .bg-artefact-accent { background-color: #fd86db !important; }
+        .text-artefact-accent { color: #fd86db !important; }
+        .text-artefact-dark { color: #F4F4F6 !important; }
+
+        /* ---------- Semantics (dark-friendly) ---------- */
+        .text-emerald-500 { color: #34d399 !important; }
+        .text-emerald-600 { color: #34d399 !important; }
+        .text-emerald-700 { color: #6ee7b7 !important; }
+        .text-emerald-700\/70 { color: rgba(110, 231, 183, 0.72) !important; }
+        .text-teal-700 { color: #5eead4 !important; }
+        .text-indigo-700, .text-indigo-900, .text-indigo-950 { color: #a5b4fc !important; }
+        .text-purple-700 { color: #c4b5fd !important; }
+        .text-amber-600, .text-amber-700 { color: #fbbf24 !important; }
+        .text-red-500, .text-red-600 { color: #fca5a5 !important; }
+
+        /* ---------- Tinted icon tiles & badges ---------- */
+        .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.12) !important; }
+        .bg-teal-50 { background-color: rgba(20, 184, 166, 0.12) !important; }
+        .bg-indigo-50, .bg-indigo-50\/50 { background-color: rgba(99, 102, 241, 0.15) !important; }
+        .bg-purple-50\/50, .bg-purple-100\/60 { background-color: rgba(168, 85, 247, 0.15) !important; }
+        .bg-amber-50 { background-color: rgba(245, 158, 11, 0.15) !important; }
+        .bg-amber-600 { background-color: #d97706 !important; }
+
+        .border-emerald-100, .border-emerald-200 { border-color: rgba(16, 185, 129, 0.28) !important; }
+        .border-indigo-100 { border-color: rgba(99, 102, 241, 0.32) !important; }
+        .border-purple-100 { border-color: rgba(168, 85, 247, 0.32) !important; }
+
+        /* ---------- Hover rows ---------- */
+        .hover\:bg-slate-100:hover, .hover\:bg-slate-100\/80:hover { background-color: rgba(255, 255, 255, 0.09) !important; }
+
+        /* ---------- Inputs ---------- */
+        select, input[type="number"], input[type="text"], input[type="email"], input[type="password"], textarea {
+            background-color: rgba(255, 255, 255, 0.06) !important;
+            color: #F4F4F6 !important;
+            border-color: rgba(255, 255, 255, 0.14) !important;
+        }
+        select option { background-color: #1A1A1E; color: #F4F4F6; }
+        ::placeholder { color: rgba(255, 255, 255, 0.35) !important; }
+
+        .focus\:ring-emerald-500\/50:focus, .focus\:ring-slate-400:focus, .ring-slate-400:focus {
+            --tw-ring-color: rgba(253, 134, 219, 0.5) !important;
+        }
+
+        /* ---------- Scrollbars ---------- */
+        .custom-scrollbar::-webkit-scrollbar-track { background: #131317; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(253, 134, 219, 0.5); }
+
+        /* ---------- Toast ---------- */
+        .bg-artefact-dark.text-white { border-color: rgba(253, 134, 219, 0.4) !important; }
+    </style>
 </head>
 <body class="min-h-screen pb-16">
 
     <!-- Notification Toast Container -->
     <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Auth Gate Overlay (shown when not signed in) -->
+    <div id="auth-gate" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" style="display:none;">
+        <div class="absolute inset-0 bg-artefact-dark/70 backdrop-blur-sm"></div>
+        <div class="relative w-full max-w-sm bg-white rounded-3xl border border-artefact-border shadow-2xl p-7 text-center">
+            <div class="w-12 h-12 mx-auto rounded-2xl bg-artefact-dark text-white font-extrabold text-lg flex items-center justify-center mb-3">ALT</div>
+            <h2 class="text-xl font-extrabold text-artefact-dark" id="gate-title">Sign in to Alt</h2>
+            <p class="text-xs text-slate-500 mt-1 mb-5" id="gate-sub">Unlock live AI analysis and save your workspace.</p>
+            <div class="text-left space-y-3">
+                <input type="email" id="gate-email" placeholder="Email address" autocomplete="email"
+                    class="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+                <input type="password" id="gate-password" placeholder="Password" autocomplete="current-password"
+                    class="w-full bg-slate-50 border border-slate-200 text-sm rounded-xl px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-emerald-500/50">
+            </div>
+            <p id="gate-error" class="hidden mt-3 text-xs font-semibold text-red-600"></p>
+            <button id="gate-submit" onclick="submitGate()" class="mt-4 w-full bg-artefact-dark text-white text-sm font-bold rounded-xl py-3 hover:bg-emerald-900 transition">
+                Sign in
+            </button>
+            <p class="mt-4 text-xs text-slate-500">
+                No account? <a href="/" class="font-semibold text-artefact-accent hover:underline">Get started free</a>
+            </p>
+        </div>
+    </div>
 
     <!-- Sticky Header & Global Summary Bar Area -->
     <header class="sticky top-0 z-40 glass-header border-b border-artefact-border/80 transition-all">
@@ -94,7 +259,7 @@
                             Home
                         </a>
                         <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-artefact-dark">
-                            ARTEFACTS
+                            ALT<span style="color:#fd86db">.</span>
                         </h1>
                         <span class="text-xl sm:text-2xl font-light text-slate-400">—</span>
                         <span class="text-base sm:text-xl font-medium text-slate-600">Insights from Ideation</span>
@@ -115,14 +280,15 @@
                     </button>
                     <div class="h-8 w-[1px] bg-slate-200 hidden sm:block"></div>
                     <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-artefact-border shadow-sm">
-                        <div class="w-7 h-7 rounded-lg bg-artefact-dark text-white font-bold text-xs flex items-center justify-center">
+                        <div class="w-7 h-7 rounded-lg bg-artefact-dark text-white font-bold text-xs flex items-center justify-center" id="user-avatar">
                             JS
                         </div>
                         <div class="text-left leading-tight hidden sm:block">
-                            <p class="text-xs font-bold text-artefact-dark">Creative Studio</p>
-                            <p class="text-[10px] text-slate-400">Pro Tier</p>
+                            <p class="text-xs font-bold text-artefact-dark" id="user-name">Creative Studio</p>
+                            <p class="text-[10px] text-slate-400" id="user-plan">Pro Tier</p>
                         </div>
                     </div>
+                    <button onclick="signOut()" class="px-3 py-2 text-xs font-semibold text-slate-500 hover:text-red-600 border border-artefact-border rounded-xl transition hover:border-red-200" title="Sign out">Sign out</button>
                 </div>
             </div>
 
@@ -327,9 +493,15 @@
                     </div>
                 </div>
 
-                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                    <span class="text-slate-500">Auto-Purge Savings:</span>
-                    <span class="font-extrabold text-emerald-600 text-sm" id="purge-savings-display">₹0 / mo</span>
+                <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2 text-xs">
+                    <div>
+                        <span class="text-slate-500 block">Auto-Purge Savings:</span>
+                        <span class="font-extrabold text-emerald-600 text-sm" id="purge-savings-display">₹0 / mo</span>
+                    </div>
+                    <button id="waste-analyze-btn" onclick="runWasteAnalysis()" class="px-3 py-1.5 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl transition shadow-sm flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        Analyze with AI
+                    </button>
                 </div>
             </div>
 
@@ -1047,6 +1219,402 @@
         }
         window.addEventListener("load", () => setTimeout(jumpToDeepLink, 700));
         window.addEventListener("hashchange", () => setTimeout(jumpToDeepLink, 250));
+    </script>
+
+    <script>
+    (function () {
+        // ===== Supabase init (public anon config) =====
+        const ALT_CONFIG = {
+            supabaseUrl: "https://nsbqsxmsntvhkurmlaxc.supabase.co",
+            supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zYnFzeG1zbnR2aGt1cm1sYXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4NTc3OTMsImV4cCI6MjEwMjQzMzc5M30.HHj2d2abo_uNwYjr59lqU8r_FnR8xuFTE6aIlaeEu1w"
+        };
+        if (!window.supabase || !ALT_CONFIG.supabaseUrl.startsWith("http")) {
+            console.warn("Alt backend not configured — running in local demo mode.");
+            return;
+        }
+        const supabase = window.altSupabase = window.supabase.createClient(ALT_CONFIG.supabaseUrl, ALT_CONFIG.supabaseAnonKey);
+        const ALT = window.ALT = { user: null, profile: null };
+
+        function showToastSafe(msg, type) {
+            if (typeof showToast === "function") showToast(msg, type);
+        }
+
+        function mapCategory(status) {
+            const s = String(status || "").toLowerCase();
+            if (s.includes("rare") || s.includes("overlap")) return "warning";
+            if (s.includes("unuse") || s.includes("not used") || s.includes("idle")) return "danger";
+            return "success";
+        }
+
+        function setLoading(el, text) {
+            if (!el) return;
+            el.innerHTML = `<div class="flex items-center gap-2 text-xs font-semibold text-slate-500 py-2"><span class="w-3 h-3 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin"></span>${text}</div>`;
+        }
+
+        function debounce(fn, ms) {
+            let t;
+            return function () { const a = arguments, c = this; clearTimeout(t); t = setTimeout(() => fn.apply(c, a), ms); };
+        }
+
+        async function callAltAPI(action, payload) {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) throw new Error("Not authenticated");
+            const res = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token },
+                body: JSON.stringify(Object.assign({ action: action }, payload || {}))
+            });
+            if (!res.ok) {
+                let msg = "AI request failed";
+                try { msg = (await res.json()).error || msg; } catch (e) { }
+                throw new Error(msg);
+            }
+            return res.json();
+        }
+
+        // ===== Auth gate =====
+        function showGate() {
+            const g = document.getElementById("auth-gate");
+            if (g) { g.style.display = "flex"; document.body.style.overflow = "hidden"; }
+        }
+        function hideGate() {
+            const g = document.getElementById("auth-gate");
+            if (g) { g.style.display = "none"; document.body.style.overflow = ""; }
+        }
+        window.submitGate = async function () {
+            const email = document.getElementById("gate-email").value.trim();
+            const password = document.getElementById("gate-password").value;
+            const errEl = document.getElementById("gate-error");
+            errEl.classList.add("hidden");
+            if (!email || !password) { errEl.textContent = "Enter email and password."; errEl.classList.remove("hidden"); return; }
+            const { error } = await supabase.auth.signInWithPassword({ email, password });
+            if (error) { errEl.textContent = error.message; errEl.classList.remove("hidden"); return; }
+        };
+        window.signOut = async function () {
+            await supabase.auth.signOut();
+            window.location.href = "/";
+        };
+
+        async function loadUserData() {
+            hideGate();
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) return;
+            ALT.user = session.user;
+            const [profiles, subs, skills] = await Promise.all([
+                supabase.from("profiles").select("*").maybeSingle(),
+                supabase.from("subscriptions").select("*").order("created_at"),
+                supabase.from("skills").select("skill").order("created_at")
+            ]);
+            ALT.profile = profiles.data || { name: (session.user.user_metadata && session.user.user_metadata.full_name) || "Alt User", plan: "starter" };
+
+            const initials = String(ALT.profile.name || "U").split(/\s+/).map(w => w[0]).slice(0, 2).join("").toUpperCase();
+            document.getElementById("user-avatar").textContent = initials;
+            document.getElementById("user-name").textContent = ALT.profile.name || "Alt User";
+            document.getElementById("user-plan").textContent = (ALT.profile.plan === "pro" ? "Pro Tier" : "Starter");
+
+            if (subs.data && subs.data.length) {
+                state.subscriptions = subs.data.map(s => ({
+                    id: s.id, name: s.name, cost: Number(s.cost), freq: s.freq,
+                    status: s.status, category: s.category || mapCategory(s.status)
+                }));
+            }
+            if (skills.data && skills.data.length) state.activeSkills = skills.data.map(s => s.skill);
+
+            renderSubscriptions();
+            renderSkillTranslator();
+            updateGlobalMetrics();
+            runSwitchSim();
+            runWorkflowRebuilder();
+            showToastSafe("Workspace loaded" + (ALT.profile.name ? ", " + ALT.profile.name : "") + " — welcome back.");
+        }
+
+        // ===== Persistence =====
+        window.addNewSubscription = async function () {
+            const nameInput = document.getElementById("add-sub-name");
+            const costInput = document.getElementById("add-sub-cost");
+            const name = nameInput.value.trim();
+            const cost = parseFloat(costInput.value);
+            if (!name || isNaN(cost) || cost <= 0) { showToastSafe("Please enter a valid tool name & monthly cost.", "warning"); return; }
+            let id = Date.now();
+            try {
+                if (ALT.user) {
+                    const { data, error } = await supabase.from("subscriptions").insert({ user_id: ALT.user.id, name, cost, freq: "month", status: "Newly Added", category: "warning" }).select().single();
+                    if (error) throw error;
+                    id = data.id;
+                }
+                state.subscriptions.unshift({ id: id, name: name, cost: cost, freq: "month", status: "Newly Added", category: "warning" });
+            } catch (err) {
+                state.subscriptions.unshift({ id: id, name: name, cost: cost, freq: "month", status: "Newly Added", category: "warning" });
+                showToastSafe("Saved locally — sync pending.", "warning");
+            }
+            nameInput.value = ""; costInput.value = "";
+            renderSubscriptions();
+            showToastSafe("Added " + name + " (₹" + cost + "/mo) to active tracking.");
+        };
+
+        window.deleteSubscription = async function (id) {
+            const index = state.subscriptions.findIndex(s => s.id === id);
+            if (index === -1) return;
+            const removed = state.subscriptions.splice(index, 1)[0];
+            renderSubscriptions();
+            showToastSafe("Purged subscription: " + removed.name);
+            if (String(id).length === 36) { await supabase.from("subscriptions").delete().eq("id", id); }
+        };
+
+        window.toggleSkill = function (skill) {
+            if (state.activeSkills.includes(skill)) {
+                state.activeSkills = state.activeSkills.filter(s => s !== skill);
+            } else {
+                state.activeSkills.push(skill);
+            }
+            renderSkillTranslator();
+            if (ALT.user) {
+                if (state.activeSkills.includes(skill)) supabase.from("skills").insert({ user_id: ALT.user.id, skill });
+                else supabase.from("skills").delete().match({ user_id: ALT.user.id, skill }).then(function () { });
+            }
+        };
+
+        // ===== Live tool wiring (local fallback) =====
+        const _runSwitchSim = window.runSwitchSim;
+        window.runSwitchSim = debounce(async function () {
+            if (!ALT.user) { _runSwitchSim(); return; }
+            const report = document.getElementById("switchsim-report");
+            const cur = document.getElementById("switch-current").value;
+            const tgtSel = document.getElementById("switch-target");
+            const tgtOpt = tgtSel.options[tgtSel.selectedIndex];
+            const costInput = parseFloat(document.getElementById("switch-cost").value) || 0;
+            setLoading(report, "Simulating switch with Alt AI…");
+            try {
+                const r = await callAltAPI("switch", {
+                    from_tool: cur,
+                    to_tool: tgtOpt ? tgtOpt.textContent : tgtSel.value,
+                    current_monthly_cost: Math.round(costInput / 12)
+                });
+                const effortMap = { seamless: 15, low: 30, moderate: 60, steep: 75 };
+                const lvl = String(r.learning_effort || "").toLowerCase();
+                let pct = 50;
+                Object.keys(effortMap).forEach(k => { if (lvl.includes(k)) pct = effortMap[k]; });
+                const savings = Number(r.annual_savings || 0);
+                const match = String(r.feature_match || "").replace(/[^0-9]/g, "").slice(0, 2);
+                report.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Estimated Annual Savings</span>
+                            <span class="text-xl font-extrabold text-emerald-600">₹${Math.round(savings).toLocaleString("en-IN")} / yr</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Feature Match</span>
+                            <span class="text-base font-extrabold text-artefact-dark">${match ? match + "%" : "—"}</span>
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-600 space-y-1">
+                        ${r.cost_difference ? "<p><span class='font-bold text-slate-500'>Cost difference:</span> " + r.cost_difference + "</p>" : ""}
+                        ${r.workflow_impact ? "<p><span class='font-bold text-slate-500'>Workflow impact:</span> " + r.workflow_impact + "</p>" : ""}
+                        ${r.file_compatibility ? "<p><span class='font-bold text-slate-500'>File compatibility:</span> " + r.file_compatibility + "</p>" : ""}
+                        ${r.verdict_reason ? "<p class='text-xs'><span class='font-bold text-slate-500'>Verdict:</span> " + r.verdict_reason + "</p>" : ""}
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-semibold text-slate-600">Learning Curve Effort:</span>
+                            <span class="font-bold text-artefact-dark">${r.learning_effort || "Moderate"}</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+                            <div class="bg-emerald-500 h-2 rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                    </div>`;
+                window.__altSwitchResult = r;
+            } catch (err) { _runSwitchSim(); }
+        }, 500);
+
+        const _applySwitch = window.applySwitchSimSavings;
+        window.applySwitchSimSavings = function () {
+            const r = window.__altSwitchResult;
+            if (r && r.annual_savings) {
+                state.switchSimAppliedSavings = Number(r.annual_savings);
+                updateGlobalMetrics();
+                showToastSafe("Applied SwitchSim AI: Saved ₹" + Math.round(r.annual_savings).toLocaleString("en-IN") + "/yr");
+                return;
+            }
+            _applySwitch();
+        };
+
+        const _runRebuilder = window.runWorkflowRebuilder;
+        window.runWorkflowRebuilder = async function () {
+            if (!ALT.user) { _runRebuilder(); return; }
+            const container = document.getElementById("rebuilder-output");
+            const nicheKey = document.getElementById("rebuilder-niche").value;
+            const local = (typeof workflowData !== 'undefined') ? workflowData[nicheKey] : null;
+            setLoading(container, "Rebuilding workflow with Alt AI…");
+            try {
+                const r = await callAltAPI("workflow", {
+                    current_stack: (local && local.beforeItems ? local.beforeItems.join(", ") : nicheKey)
+                });
+                const tools = (r.rebuilt && r.rebuilt.tools) || [];
+                const currentTools = (r.current && r.current.tools) || (local && local.beforeItems) || [];
+                const currentCost = Number((r.current && r.current.monthly_cost) || 0);
+                const savings = Number(r.monthly_savings || 0);
+                container.innerHTML = `
+                    <div class="border-b border-slate-200 pb-2.5">
+                        <div class="flex justify-between items-center text-xs mb-1">
+                            <span class="font-bold text-slate-400 uppercase">Legacy Suite Cost:</span>
+                            <span class="font-bold text-slate-600 line-through">₹${currentCost.toLocaleString("en-IN")}/mo</span>
+                        </div>
+                        <p class="text-xs text-slate-600 font-medium">Included: ${currentTools.join(", ")}</p>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold text-indigo-900 uppercase tracking-wider block mb-2">Optimized Open-Source Stack:</span>
+                        <div class="space-y-1.5">
+                            ${tools.map(t => `<div class="flex items-center justify-between text-xs bg-white p-2 rounded-xl border border-slate-200/60 shadow-2xs"><div><span class="font-bold text-artefact-dark block">${t.name || t}</span><span class="text-[10px] text-slate-400">${t.purpose || t.cost || ""}</span></div><span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">${t.cost || "Included"}</span></div>`).join("")}
+                        </div>
+                    </div>
+                    <div class="pt-2 flex justify-between items-center bg-indigo-50/50 p-2.5 rounded-xl border border-indigo-100">
+                        <span class="text-xs font-bold text-indigo-950">Net Stack Optimization:</span>
+                        <span class="text-xs font-extrabold text-emerald-600">+₹${savings.toLocaleString("en-IN")} / mo</span>
+                    </div>
+                    ${r.summary ? `<p class="text-[11px] text-slate-500 italic p-2 bg-indigo-50/50 rounded-xl border border-indigo-100 mt-2">${r.summary}</p>` : ""}`;
+                window.__altRebuildResult = r;
+            } catch (err) { _runRebuilder(); }
+        };
+
+        const _acceptRebuild = window.acceptWorkflowRebuild;
+        window.acceptWorkflowRebuild = function () {
+            const r = window.__altRebuildResult;
+            if (r && r.monthly_savings) {
+                state.switchSimAppliedSavings += Number(r.monthly_savings) * 12;
+                updateGlobalMetrics();
+                showToastSafe("Workflow Rebuilder stack adopted! Savings updated.");
+                return;
+            }
+            _acceptRebuild();
+        };
+
+        window.runWasteAnalysis = async function () {
+            if (!ALT.user) { showToastSafe("Sign in to analyze with AI.", "warning"); return; }
+            const btn = document.getElementById("waste-analyze-btn");
+            btn.disabled = true; btn.textContent = "Analyzing…";
+            try {
+                const subs = state.subscriptions.map(s => ({ name: s.name, price: s.cost, freq: s.freq }));
+                const r = await callAltAPI("subscriptions", { subscriptions: subs });
+                if (r.items && r.items.length) {
+                    state.subscriptions = r.items.map((it, i) => ({
+                        id: (state.subscriptions[i] && state.subscriptions[i].id) || Date.now() + i,
+                        name: it.name, cost: Number(it.price || 0), freq: "month",
+                        status: it.status, category: mapCategory(it.status),
+                        note: it.suggested_action || ""
+                    }));
+                    renderSubscriptions();
+                    updateGlobalMetrics();
+                    const wasteCount = state.subscriptions.filter(s => s.category === "danger" || s.category === "warning").length;
+                    showToastSafe("AI found " + wasteCount + " wasteful subscription(s).");
+                } else {
+                    showToastSafe("AI returned no items.", "warning");
+                }
+            } catch (err) {
+                showToastSafe("Analysis failed: " + err.message, "warning");
+            }
+            btn.disabled = false; btn.textContent = "Analyze with AI";
+        };
+
+        const _renderSkills = window.renderSkillTranslator;
+        window.renderSkillTranslator = debounce(async function () {
+            const chipsContainer = document.getElementById("skills-chips-container");
+            const resultsContainer = document.getElementById("skill-translator-results");
+            const allSkills = ["Motion Graphics", "Layer Based Editing", "2D Animation", "Compositing", "Video Editing", "3D Modeling", "Illustration", "UI Design"];
+            chipsContainer.innerHTML = allSkills.map(skill => {
+                const isSelected = state.activeSkills.includes(skill);
+                return `<button onclick="toggleSkill('${skill}')" class="px-2.5 py-1 rounded-xl text-xs font-semibold transition-all duration-200 ${isSelected ? "bg-artefact-dark text-white shadow-xs" : "bg-slate-100 text-slate-500 hover:bg-slate-200"}">${isSelected ? "✓ " : "+ "}${skill}</button>`;
+            }).join("");
+            if (!ALT.user) { _renderSkills(); return; }
+            if (!state.activeSkills.length) {
+                resultsContainer.innerHTML = `<p class="text-xs text-slate-400 py-4 text-center">Select skills above to generate alternative software matches.</p>`;
+                return;
+            }
+            setLoading(resultsContainer, "Translating skills with Alt AI…");
+            try {
+                const r = await callAltAPI("skills", { skills: state.activeSkills.join(", ") });
+                if (r.mappings && r.mappings.length) {
+                    resultsContainer.innerHTML = r.mappings.map(m => `
+                        <div class="flex items-center justify-between p-3 bg-white rounded-xl border border-slate-200/80 hover:border-teal-300 transition shadow-2xs">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h4 class="text-xs font-bold text-artefact-dark">${m.skill}</h4>
+                                    <span class="text-[10px] bg-teal-50 text-teal-700 px-2 py-0.5 rounded-md font-medium">→ ${m.tool}</span>
+                                </div>
+                                ${m.why ? `<p class="text-[10px] text-slate-400 mt-1">${m.why}</p>` : ""}
+                            </div>
+                            <div class="text-right flex items-center gap-3">
+                                <div><span class="text-xs font-extrabold text-teal-700 block">${m.transfer || "Medium"}</span><span class="text-[9px] text-slate-400 block uppercase">Transfer</span></div>
+                                ${m.learning_time ? `<div class="text-right"><span class="text-xs font-bold text-slate-600 block">${m.learning_time}</span><span class="text-[9px] text-slate-400 block uppercase">Learn</span></div>` : ""}
+                            </div>
+                        </div>`).join("");
+                } else { _renderSkills(); }
+            } catch (err) { _renderSkills(); }
+        }, 600);
+
+        const _switchTab = window.switchScenarioTab;
+        window.switchScenarioTab = async function (tabKey) {
+            ["STUDENT", "FREELANCER", "BUSINESS"].forEach(key => {
+                const btn = document.getElementById("tab-" + key);
+                if (btn) btn.className = key === tabKey ? "flex-1 py-2 text-xs font-bold rounded-xl transition bg-white text-artefact-dark shadow-sm" : "flex-1 py-2 text-xs font-bold rounded-xl transition text-slate-600 hover:text-artefact-dark";
+            });
+            state.activeScenarioTab = tabKey;
+            if (!ALT.user) { _switchTab(tabKey); return; }
+            const container = document.getElementById("scenario-tab-content");
+            const effEl = document.getElementById("scenario-efficiency");
+            setLoading(container, "Generating optimal stack with Alt AI…");
+            if (effEl) effEl.textContent = "…";
+            const role = tabKey === "STUDENT" ? "student / self-taught creator" : tabKey === "FREELANCER" ? "solo creative freelancer" : "boutique creative agency (5 seats)";
+            try {
+                const r = await callAltAPI("scenario", { role: role });
+                const stack = (r.stack || []).map(item => `<div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-200/70 text-xs"><span class="font-bold text-artefact-dark">${item.name}</span><span class="font-extrabold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">${item.cost || item.purpose || "Included"}</span></div>`).join("");
+                container.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                        <div><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Target Profile</h3><p class="text-sm font-extrabold text-artefact-dark">${r.role || role}</p></div>
+                        <div class="text-right"><h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Target Budget</h3><p class="text-xs font-bold text-purple-700 bg-purple-100/60 px-2.5 py-1 rounded-lg inline-block">${r.budget || "—"}</p></div>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Curated Optimal Stack:</span>
+                        <div class="space-y-1.5">${stack}</div>
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-slate-200/80 flex items-center justify-between text-xs">
+                        <div><span class="text-slate-400 block text-[10px] uppercase">Monthly Stack Cost</span><span class="text-slate-500 font-bold">₹${Number(r.total_monthly || 0).toLocaleString("en-IN")}/mo</span></div>
+                        <div class="text-right"><span class="text-slate-400 block text-[10px] uppercase">Potential Savings</span><span class="text-emerald-600 font-extrabold text-sm">+₹${Number(r.potential_savings || 0).toLocaleString("en-IN")} / mo</span></div>
+                    </div>
+                    ${r.note ? `<p class="text-[11px] text-slate-500 italic bg-purple-50/50 p-2.5 rounded-xl border border-purple-100">💡 ${r.note}</p>` : ""}`;
+                if (effEl) effEl.textContent = "AI";
+            } catch (err) { if (effEl) effEl.textContent = "94/100"; _switchTab(tabKey); }
+        };
+
+        window.applyScenarioStack = function () {
+            showToastSafe("Scenario stack saved — included in savings calculation.");
+        };
+
+        const _reset = window.resetAllData;
+        window.resetAllData = function () {
+            _reset();
+            if (ALT.user) {
+                supabase.from("subscriptions").delete().eq("user_id", ALT.user.id).then(function () { });
+                supabase.from("skills").delete().eq("user_id", ALT.user.id).then(function () { });
+                showToastSafe("Workspace reset to defaults (remote data cleared).");
+            }
+        };
+
+        // ===== Session handling =====
+        supabase.auth.onAuthStateChange(function (event, session) {
+            if (event === "SIGNED_IN") loadUserData();
+            if (event === "SIGNED_OUT") window.location.href = "/";
+        });
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                ALT.user = session.user;
+                await loadUserData();
+            } else {
+                showGate();
+            }
+        });
+    })();
     </script>
 </body>
 </html>

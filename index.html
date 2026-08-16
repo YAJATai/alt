@@ -659,6 +659,10 @@
       display: block;
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    window.ALT_CONFIG = { supabaseUrl: "https://nsbqsxmsntvhkurmlaxc.supabase.co", supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5zYnFzeG1zbnR2aGt1cm1sYXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY4NTc3OTMsImV4cCI6MjEwMjQzMzc5M30.HHj2d2abo_uNwYjr59lqU8r_FnR8xuFTE6aIlaeEu1w" };
+  </script>
 </head>
 <body>
   <main class="viewport" id="home">
@@ -787,9 +791,9 @@
         Questions about migrations, enterprise licensing, or onboarding your team? Drop us a note and we'll get back within a business day.
       </p>
       <form class="contact-form" id="contact-form" novalidate>
-        <input class="auth-field" type="text" name="name" placeholder="Your name" required>
-        <input class="auth-field" type="email" name="email" placeholder="Work email" required>
-        <textarea class="auth-field" name="message" rows="4" placeholder="How can we help?" required style="resize: vertical;"></textarea>
+        <input class="auth-field" type="text" name="name" id="contact-name" placeholder="Your name" required>
+        <input class="auth-field" type="email" name="email" id="contact-email" placeholder="Work email" required>
+        <textarea class="auth-field" name="message" id="contact-message" rows="4" placeholder="How can we help?" required style="resize: vertical;"></textarea>
         <button type="submit" class="auth-btn">Send message</button>
       </form>
       <div class="contact-success" id="contact-success">
@@ -1047,16 +1051,12 @@
   </script>
 
   <script>
-    // ===== SaaS flow: auth + navigation =====
-    const SESSION_KEY = 'alt_session';
-    const USERS_KEY = 'alt_users';
-
-    function getUsers() {
-      try { return JSON.parse(localStorage.getItem(USERS_KEY)) || {}; } catch (e) { return {}; }
-    }
-    function getSession() {
-      try { return JSON.parse(localStorage.getItem(SESSION_KEY)) || null; } catch (e) { return null; }
-    }
+    // ===== SaaS flow: Supabase auth + navigation =====
+    const altSupabase = window.altSupabase = (window.supabase && window.ALT_CONFIG.supabaseUrl && window.ALT_CONFIG.supabaseUrl.startsWith("http"))
+      ? window.supabase.createClient(window.ALT_CONFIG.supabaseUrl, window.ALT_CONFIG.supabaseAnonKey)
+      : null;
+    const ALT = window.ALT = { user: null };
+    let selectedPlan = 'starter';
 
     function closeMenu() {
       if (typeof toggleMenu === 'function') {
@@ -1089,7 +1089,8 @@
       const toggleBtn = document.getElementById('auth-toggle-btn');
 
       if (trigger && trigger.dataset && trigger.dataset.plan) {
-        planEl.value = trigger.dataset.plan;
+        selectedPlan = trigger.dataset.plan;
+        planEl.value = selectedPlan;
       }
 
       if (authLastMode === 'signin') {
@@ -1137,7 +1138,7 @@
 
     function openTool(card) {
       const anchor = (card.dataset && card.dataset.tool) || '';
-      if (getSession()) {
+      if (ALT.user) {
         goToApp('#' + anchor);
       } else {
         authPendingTool = anchor;
@@ -1157,28 +1158,67 @@
       if (!password || password.length < 6) return showAuthError('Password must be at least 6 characters.');
       if (mode === 'signup' && !name) return showAuthError('Please enter your full name.');
 
-      const users = getUsers();
-      const session = getSession();
+      const submitBtn = document.getElementById('auth-submit');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Please wait…';
 
-      if (mode === 'signin') {
-        const u = users[email];
-        if (!u || u.password !== password) return showAuthError('Invalid email or password.');
-        localStorage.setItem(SESSION_KEY, JSON.stringify({ name: u.name, email, plan: u.plan, at: Date.now() }));
-      } else {
-        if (users[email]) return showAuthError('An account with this email already exists. Try signing in.');
-        const plan = document.getElementById('auth-plan').value;
-        users[email] = { name, password, plan, at: Date.now() };
-        localStorage.setItem(USERS_KEY, JSON.stringify(users));
-        localStorage.setItem(SESSION_KEY, JSON.stringify({ name, email, plan, at: Date.now() }));
+      if (!altSupabase) {
+        showAuthError('The Alt backend is being configured — please try again shortly.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = mode === 'signin' ? 'Sign in' : 'Create account';
+        return;
       }
 
-      const target = authPendingTool ? '#' + authPendingTool : '';
-      goToApp(target);
+      const afterAuth = () => {
+        closeAuth();
+        const target = authPendingTool ? '#' + authPendingTool : '';
+        authPendingTool = '';
+        goToApp(target);
+      };
+
+      if (mode === 'signin') {
+        altSupabase.auth.signInWithPassword({ email, password })
+          .then(({ error }) => {
+            if (error) {
+              showAuthError(error.message);
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Sign in';
+              return;
+            }
+            afterAuth();
+          });
+        return;
+      }
+
+      // Signup — plan stored in user metadata + profile row
+      altSupabase.auth.signUp({
+        email,
+        password,
+        options: { data: { full_name: name, plan: selectedPlan } }
+      }).then(async ({ data, error }) => {
+        if (error) {
+          showAuthError(error.message);
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create account';
+          return;
+        }
+        if (data.session && data.session.user) {
+          // Email confirmation is off — straight through.
+          await altSupabase.from('profiles')
+            .upsert({ id: data.session.user.id, name, plan: selectedPlan }, { onConflict: 'id' });
+          afterAuth();
+        } else {
+          showAuthError('Account created! Check your inbox to verify your email, then sign in.');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create account';
+        }
+      });
     }
 
     function refreshCta() {
       const cta = document.getElementById('nav-cta');
-      if (getSession()) {
+      if (!cta) return;
+      if (ALT.user) {
         cta.textContent = 'Open Dashboard';
         cta.onclick = () => goToApp('');
       } else {
@@ -1190,7 +1230,7 @@
     // Wire up
     document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
     document.getElementById('nav-cta').addEventListener('click', () => {
-      if (getSession()) goToApp(''); else openAuth('signup');
+      if (ALT.user) goToApp(''); else openAuth('signup');
     });
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -1199,22 +1239,42 @@
       }
     });
 
-    // Contact form (simulated submission)
+    // Contact form — posts to Supabase, falls back to local success
     document.getElementById('contact-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      const f = e.target;
-      const name = f.name.value.trim();
-      const email = f.email.value.trim();
-      const message = f.message.value.trim();
+      const f = document.getElementById('contact-form');
+      const name = document.getElementById('contact-name').value.trim();
+      const email = document.getElementById('contact-email').value.trim();
+      const message = document.getElementById('contact-message').value.trim();
       if (!name) { f.name.focus(); f.name.style.borderColor = '#fd86db'; return; }
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { f.email.focus(); f.email.style.borderColor = '#fd86db'; return; }
       if (!message) { f.message.focus(); f.message.style.borderColor = '#fd86db'; return; }
-      f.reset();
-      document.getElementById('contact-form').style.display = 'none';
-      document.getElementById('contact-success').classList.add('is-shown');
+      const sendBtn = f.querySelector('.auth-btn');
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'Sending…';
+      const finish = () => {
+        f.reset();
+        document.getElementById('contact-form').style.display = 'none';
+        document.getElementById('contact-success').classList.add('is-shown');
+      };
+      if (altSupabase) {
+        altSupabase.from('contact_messages').insert({ name, email, message }).then(finish).catch(finish);
+      } else {
+        setTimeout(finish, 400);
+      }
     });
 
-    refreshCta();
+    // Session state
+    if (altSupabase) {
+      altSupabase.auth.onAuthStateChange((event, session) => {
+        ALT.user = session ? session.user : null;
+        refreshCta();
+      });
+      altSupabase.auth.getSession().then(({ data }) => {
+        ALT.user = data.session ? data.session.user : null;
+        refreshCta();
+      });
+    }
   </script>
 </body>
 </html>

@@ -1,3 +1,5 @@
+const { createClient } = require("@supabase/supabase-js");
+
 const PERSONA = `You are AltBot, the AI assistant for ALT. — a software alternative discovery and savings platform for students, creators, freelancers, and budget-conscious users (Indian pricing, ₹).
 
 Be smart, helpful, confident, friendly, non-judgmental. Use plain language, not corporate speak. Example: instead of "your subscription utilization is suboptimal" say "You're paying for Canva Pro but barely use it — save ₹499/month."
@@ -257,6 +259,23 @@ module.exports = async function handler(req, res) {
     return;
   }
   const key = process.env.GEMINI_API_KEY;
+
+  // Authenticate with Supabase — the client's JWT must map to a real user.
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+  if (!token) {
+    res.status(401).json({ error: "Authentication required. Sign in to use Alt tools." });
+    return;
+  }
+  const supabase = createClient(process.env.SUPABASE_URL || "", process.env.SUPABASE_SERVICE_ROLE_KEY || "", {
+    auth: { persistSession: false, autoRefreshToken: false }
+  });
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  if (authError || !user) {
+    res.status(401).json({ error: "Invalid or expired session." });
+    return;
+  }
+
   let body = {};
   try { body = typeof req.body === "string" ? JSON.parse(req.body) : (req.body || {}); } catch { body = {}; }
 
@@ -273,8 +292,8 @@ module.exports = async function handler(req, res) {
   }
 
   const parts = buildPrompt(body).map(t => ({ text: t }));
-  const primary = process.env.GEMINI_MODEL || "gemini-2.5-flash";
-  const fallback = "gemini-2.0-flash";
+  const primary = process.env.GEMINI_MODEL || "gemini-3.6-flash";
+  const fallback = process.env.GEMINI_MODEL_FALLBACK || "gemini-2.0-flash";
 
   let lastErr = null;
   for (const model of [primary, fallback]) {
