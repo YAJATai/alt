@@ -457,43 +457,6 @@
       font-size: 18px;
     }
 
-    /* Pricing */
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }
-    .price-card {
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 48px;
-      border-radius: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-    .price-card--featured {
-      background: rgba(255, 197, 220, 0.03);
-      border-color: #fd86db;
-    }
-    .price-tier {
-      font-size: 20px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: rgba(255, 255, 255, 0.6);
-    }
-    .price-card--featured .price-tier {
-      color: #fd86db;
-    }
-    .price-amt {
-      font-family: "Orbit Display", serif;
-      font-size: 80px;
-      margin: 24px 0;
-      line-height: 1;
-    }
-    .price-amt span {
-      font-family: "Orbit Sans", Arial, sans-serif;
-      font-size: 20px;
-      color: rgba(255, 255, 255, 0.5);
-    }
     .btn {
       display: inline-flex;
       align-items: center;
@@ -738,7 +701,8 @@
       <ul class="primary-nav">
         <li class="nav-home"><a href="#home">Home</a></li>
         <li class="nav-resources"><a href="#features">Features</a></li>
-        <li class="nav-benefits"><a href="#pricing">Pricing</a></li>
+        <li class="nav-benefits"><a href="#software">Software</a></li>
+        <li class="nav-benefits"><a href="#contact">Contact</a></li>
         <li class="nav-contact"><a href="#contact">Contact</a></li>
       </ul>
 
@@ -780,7 +744,7 @@
           <div style="padding: 30px; display: flex; flex-direction: column; gap: 16px;">
             <a href="#home" style="color: var(--ink); text-decoration: none; font-size: 20px;">Home</a>
             <a href="#features" style="color: var(--ink); text-decoration: none; font-size: 20px;">Features</a>
-            <a href="#pricing" style="color: var(--ink); text-decoration: none; font-size: 20px;">Pricing</a>
+            <a href="#software" style="color: var(--ink); text-decoration: none; font-size: 20px;">Software</a>
             <a href="#contact" style="color: var(--ink); text-decoration: none; font-size: 20px;">Contact</a>
             <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.15); margin: 8px 0; width: 100%;">
             <a href="/app#switchsim" style="color: var(--ink); text-decoration: none; font-size: 16px; opacity: 0.8;">SwitchSim AI</a>
@@ -923,26 +887,6 @@
     </div>
   </section>
 
-  <section id="pricing" class="page-section">
-    <div class="section-inner">
-      <h2 class="section-heading">Simple, <span class="orbit-word__pink">transparent</span> pricing.</h2>
-      <div class="pricing-grid">
-        <div class="price-card">
-          <div class="price-tier">Starter</div>
-          <div class="price-amt">$0<span>/mo</span></div>
-          <p class="feature-desc">Perfect for individuals looking to track and optimize personal subscriptions.</p>
-          <a href="javascript:void(0)" class="btn btn--outline" data-plan="starter" onclick="openAuth('signup', this)">Get Started</a>
-        </div>
-        <div class="price-card price-card--featured">
-          <div class="price-tier">Pro</div>
-          <div class="price-amt">$49<span>/mo</span></div>
-          <p class="feature-desc">For teams running complex workflows needing AI automation and simulation.</p>
-          <a href="javascript:void(0)" class="btn" data-plan="pro" onclick="openAuth('signup', this)">Start Free Trial</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section id="contact" class="page-section">
     <div class="section-inner">
       <h2 class="section-heading">Talk to the <span class="orbit-word__pink">team.</span></h2>
@@ -983,7 +927,6 @@
         <input class="auth-field" type="email" id="auth-email" placeholder="Email address" autocomplete="email">
         <input class="auth-field" type="password" id="auth-password" placeholder="Password" autocomplete="current-password">
         <input type="hidden" id="auth-mode" value="signup">
-        <input type="hidden" id="auth-plan" value="starter">
         <input type="hidden" id="auth-tool" value="">
         <button type="submit" class="auth-btn" id="auth-submit">Create account</button>
       </form>
@@ -1241,16 +1184,10 @@
 
       const modal = document.getElementById('auth-modal');
       const modeEl = document.getElementById('auth-mode');
-      const planEl = document.getElementById('auth-plan');
       const submitBtn = document.getElementById('auth-submit');
       const sub = document.getElementById('auth-sub');
       const toggleLabel = document.getElementById('auth-toggle-label');
       const toggleBtn = document.getElementById('auth-toggle-btn');
-
-      if (trigger && trigger.dataset && trigger.dataset.plan) {
-        selectedPlan = trigger.dataset.plan;
-        planEl.value = selectedPlan;
-      }
 
       if (authLastMode === 'signin') {
         modeEl.value = 'signin';
