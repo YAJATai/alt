@@ -387,6 +387,11 @@
                                 <option value="cinema4d">Cinema 4D + Redshift Render</option>
                                 <option value="protools">Pro Tools Ultimate Subscription</option>
                                 <option value="sketch-invision">Sketch + InVision Enterprise</option>
+                                <option value="final-cut">Final Cut Pro + Motion</option>
+                                <option value="canva-pro">Canva Pro</option>
+                                <option value="after-effects">Adobe After Effects</option>
+                                <option value="logic-pro">Apple Logic Pro</option>
+                                <option value="ableton">Ableton Live Suite</option>
                             </select>
                         </div>
 
@@ -443,6 +448,10 @@
                             <option value="illustration-animation" selected>Illustration + Motion + Video (User Stack)</option>
                             <option value="3d-vfx">3D Modeling, Texturing & VFX</option>
                             <option value="ui-ux">UI/UX Design & Interactive Prototyping</option>
+                            <option value="video-editing">Video Editing, Motion & Audio Post</option>
+                            <option value="audio-production">Music & Podcast Production</option>
+                            <option value="photography">Photography & Retouching</option>
+                            <option value="productivity">Team Productivity & Ops Suite</option>
                         </select>
                     </div>
 
@@ -653,6 +662,36 @@
                 targets: [
                     { id: "penpot-figma", name: "Penpot (Open Source) + Figma Free", cost: 0, match: 98, effort: 15, effortLabel: "Seamless (1 day)" }
                 ]
+            },
+            "final-cut": {
+                name: "Final Cut Pro + Motion",
+                targets: [
+                    { id: "davinci-studio", name: "DaVinci Resolve Studio + Fusion (One-Time)", cost: 0, match: 91, effort: 30, effortLabel: "Low (approx. 2 days)" }
+                ]
+            },
+            "canva-pro": {
+                name: "Canva Pro",
+                targets: [
+                    { id: "figma-canva-free", name: "Figma (Free) + Canva Free Tier", cost: 0, match: 88, effort: 15, effortLabel: "Seamless (1 day)" }
+                ]
+            },
+            "after-effects": {
+                name: "Adobe After Effects",
+                targets: [
+                    { id: "cavalry-blender", name: "Cavalry + Blender Grease Pencil", cost: 0, match: 84, effort: 75, effortLabel: "Steep (approx. 12 days)" }
+                ]
+            },
+            "logic-pro": {
+                name: "Apple Logic Pro",
+                targets: [
+                    { id: "garageband-reaper", name: "GarageBand (Free) + Reaper", cost: 0, match: 93, effort: 20, effortLabel: "Seamless (1-2 days)" }
+                ]
+            },
+            "ableton": {
+                name: "Ableton Live Suite",
+                targets: [
+                    { id: "reaper-vital", name: "Reaper + Vital (Free Synth)", cost: 60, match: 86, effort: 45, effortLabel: "Moderate (approx. 4 days)" }
+                ]
             }
         };
 
@@ -691,6 +730,55 @@
                 ],
                 afterCost: 0,
                 monthlySaving: 3500
+            },
+            "video-editing": {
+                title: "Video Editing & Motion Graphics Suite",
+                beforeCost: 2999,
+                beforeItems: ["Premiere Pro", "After Effects", "Audition", "Media Encoder"],
+                afterItems: [
+                    { name: "DaVinci Resolve + Fusion", tag: "NLE + VFX & Compositing", cost: "Free Studio Tier" },
+                    { name: "Cavalry / Blender", tag: "Motion Graphics", cost: "Free Tier" },
+                    { name: "Audacity / Fairlight", tag: "Audio Post", cost: "Free" }
+                ],
+                afterCost: 0,
+                monthlySaving: 2999
+            },
+            "audio-production": {
+                title: "Music & Podcast Production Stack",
+                beforeCost: 2500,
+                beforeItems: ["Pro Tools Ultimate", "Adobe Audition", "Splice"],
+                afterItems: [
+                    { name: "Reaper DAW", tag: "Recording & Mixing", cost: "₹60 / Discounted" },
+                    { name: "Ardour / Audacity", tag: "Podcast Post", cost: "Free" },
+                    { name: "Vital / Surge XT", tag: "Free Synths & FX", cost: "Free" }
+                ],
+                afterCost: 60,
+                monthlySaving: 2440
+            },
+            "photography": {
+                title: "Photography & Retouching Stack",
+                beforeCost: 1100,
+                beforeItems: ["Lightroom CC", "Photoshop", "Adobe Portfolio"],
+                afterItems: [
+                    { name: "Darktable / RawTherapee", tag: "RAW Development", cost: "Free / Open Source" },
+                    { name: "GIMP + GMIC", tag: "Retouching", cost: "Free / Open Source" },
+                    { name: "Photopea", tag: "Browser PSD Editing", cost: "Free" }
+                ],
+                afterCost: 0,
+                monthlySaving: 1100
+            },
+            "productivity": {
+                title: "Team Productivity & Ops Suite",
+                beforeCost: 4200,
+                beforeItems: ["Notion Plus", "Slack Pro", "Zoom Business", "Trello Premium"],
+                afterItems: [
+                    { name: "Notion Free / AppFlowy", tag: "Docs & Wikis", cost: "Free" },
+                    { name: "Slack Free / Discord", tag: "Team Chat", cost: "Free" },
+                    { name: "Google Meet / Jitsi", tag: "Video Calls", cost: "Free" },
+                    { name: "FreeKanban / Planka", tag: "Task Boards", cost: "Free / Open Source" }
+                ],
+                afterCost: 0,
+                monthlySaving: 4200
             }
         };
 

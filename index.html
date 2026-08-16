@@ -365,6 +365,69 @@
       background-clip: text;
       color: transparent;
     }
+    .software-marquee {
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .software-marquee::before,
+    .software-marquee::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 12vw;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .software-marquee::before {
+      left: 0;
+      background: linear-gradient(90deg, #101010, transparent);
+    }
+    .software-marquee::after {
+      right: 0;
+      background: linear-gradient(-90deg, #101010, transparent);
+    }
+    .software-track {
+      display: flex;
+      gap: 14px;
+      width: max-content;
+      animation: software-scroll 46s linear infinite;
+      will-change: transform;
+    }
+    .software-marquee--rev .software-track {
+      animation-direction: reverse;
+    }
+    @keyframes software-scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .software-chip {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 999px;
+      padding: 13px 24px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.85);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .software-chip .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #ffc5dc 0%, #fd86db 100%);
+      flex: none;
+    }
+    .software-note {
+      margin: 4vh 0 0;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      letter-spacing: 0.01em;
+    }
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -761,6 +824,101 @@
           <p class="feature-cta">Open tool →</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section id="software" class="page-section">
+    <div class="section-inner">
+      <h2 class="section-heading">Software we <span class="orbit-word__pink">cover</span>.</h2>
+      <div class="software-marquee">
+        <div class="software-track">
+          <span class="software-chip"><i class="dot"></i>Adobe Photoshop</span>
+          <span class="software-chip"><i class="dot"></i>Adobe Illustrator</span>
+          <span class="software-chip"><i class="dot"></i>After Effects</span>
+          <span class="software-chip"><i class="dot"></i>Premiere Pro</span>
+          <span class="software-chip"><i class="dot"></i>Lightroom</span>
+          <span class="software-chip"><i class="dot"></i>Figma</span>
+          <span class="software-chip"><i class="dot"></i>Canva Pro</span>
+          <span class="software-chip"><i class="dot"></i>Blender</span>
+          <span class="software-chip"><i class="dot"></i>Cinema 4D</span>
+          <span class="software-chip"><i class="dot"></i>DaVinci Resolve</span>
+          <span class="software-chip"><i class="dot"></i>Final Cut Pro</span>
+          <span class="software-chip"><i class="dot"></i>Pro Tools</span>
+          <span class="software-chip"><i class="dot"></i>Ableton Live</span>
+          <span class="software-chip"><i class="dot"></i>Logic Pro</span>
+          <span class="software-chip"><i class="dot"></i>Reaper</span>
+          <span class="software-chip"><i class="dot"></i>Sketch</span>
+          <span class="software-chip"><i class="dot"></i>Krita</span>
+          <span class="software-chip"><i class="dot"></i>Inkscape</span>
+          <span class="software-chip"><i class="dot"></i>Affinity Suite</span>
+          <span class="software-chip"><i class="dot"></i>Envato Elements</span>
+          <span class="software-chip"><i class="dot"></i>Adobe Photoshop</span>
+          <span class="software-chip"><i class="dot"></i>Adobe Illustrator</span>
+          <span class="software-chip"><i class="dot"></i>After Effects</span>
+          <span class="software-chip"><i class="dot"></i>Premiere Pro</span>
+          <span class="software-chip"><i class="dot"></i>Lightroom</span>
+          <span class="software-chip"><i class="dot"></i>Figma</span>
+          <span class="software-chip"><i class="dot"></i>Canva Pro</span>
+          <span class="software-chip"><i class="dot"></i>Blender</span>
+          <span class="software-chip"><i class="dot"></i>Cinema 4D</span>
+          <span class="software-chip"><i class="dot"></i>DaVinci Resolve</span>
+          <span class="software-chip"><i class="dot"></i>Final Cut Pro</span>
+          <span class="software-chip"><i class="dot"></i>Pro Tools</span>
+          <span class="software-chip"><i class="dot"></i>Ableton Live</span>
+          <span class="software-chip"><i class="dot"></i>Logic Pro</span>
+          <span class="software-chip"><i class="dot"></i>Reaper</span>
+          <span class="software-chip"><i class="dot"></i>Sketch</span>
+          <span class="software-chip"><i class="dot"></i>Krita</span>
+          <span class="software-chip"><i class="dot"></i>Inkscape</span>
+          <span class="software-chip"><i class="dot"></i>Affinity Suite</span>
+          <span class="software-chip"><i class="dot"></i>Envato Elements</span>
+        </div>
+      </div>
+      <div class="software-marquee software-marquee--rev">
+        <div class="software-track">
+          <span class="software-chip"><i class="dot"></i>Notion</span>
+          <span class="software-chip"><i class="dot"></i>Slack</span>
+          <span class="software-chip"><i class="dot"></i>Zoom</span>
+          <span class="software-chip"><i class="dot"></i>Miro</span>
+          <span class="software-chip"><i class="dot"></i>Airtable</span>
+          <span class="software-chip"><i class="dot"></i>Asana</span>
+          <span class="software-chip"><i class="dot"></i>Dropbox</span>
+          <span class="software-chip"><i class="dot"></i>Google Workspace</span>
+          <span class="software-chip"><i class="dot"></i>Microsoft 365</span>
+          <span class="software-chip"><i class="dot"></i>GitHub</span>
+          <span class="software-chip"><i class="dot"></i>Framer</span>
+          <span class="software-chip"><i class="dot"></i>Webflow</span>
+          <span class="software-chip"><i class="dot"></i>Mailchimp</span>
+          <span class="software-chip"><i class="dot"></i>HubSpot</span>
+          <span class="software-chip"><i class="dot"></i>Semrush</span>
+          <span class="software-chip"><i class="dot"></i>Ahrefs</span>
+          <span class="software-chip"><i class="dot"></i>Loom</span>
+          <span class="software-chip"><i class="dot"></i>OBS Studio</span>
+          <span class="software-chip"><i class="dot"></i>FL Studio</span>
+          <span class="software-chip"><i class="dot"></i>CapCut</span>
+          <span class="software-chip"><i class="dot"></i>Notion</span>
+          <span class="software-chip"><i class="dot"></i>Slack</span>
+          <span class="software-chip"><i class="dot"></i>Zoom</span>
+          <span class="software-chip"><i class="dot"></i>Miro</span>
+          <span class="software-chip"><i class="dot"></i>Airtable</span>
+          <span class="software-chip"><i class="dot"></i>Asana</span>
+          <span class="software-chip"><i class="dot"></i>Dropbox</span>
+          <span class="software-chip"><i class="dot"></i>Google Workspace</span>
+          <span class="software-chip"><i class="dot"></i>Microsoft 365</span>
+          <span class="software-chip"><i class="dot"></i>GitHub</span>
+          <span class="software-chip"><i class="dot"></i>Framer</span>
+          <span class="software-chip"><i class="dot"></i>Webflow</span>
+          <span class="software-chip"><i class="dot"></i>Mailchimp</span>
+          <span class="software-chip"><i class="dot"></i>HubSpot</span>
+          <span class="software-chip"><i class="dot"></i>Semrush</span>
+          <span class="software-chip"><i class="dot"></i>Ahrefs</span>
+          <span class="software-chip"><i class="dot"></i>Loom</span>
+          <span class="software-chip"><i class="dot"></i>OBS Studio</span>
+          <span class="software-chip"><i class="dot"></i>FL Studio</span>
+          <span class="software-chip"><i class="dot"></i>CapCut</span>
+        </div>
+      </div>
+      <p class="software-note">Track every subscription, simulate every switch — across your whole creative stack.</p>
     </div>
   </section>
 
