@@ -548,9 +548,23 @@
         addChatMsg('ai', 'Hey! I\'m <strong>AltBot</strong> — your AI software advisor. Tell me what you need and I\'ll find the best free or cheaper alternatives for your creative workflow. What software are you trying to replace?');
     });
 
+    function resetStateToDefaults() {
+        state.subscriptions = [];
+        state.switchSimAppliedSavings = 0;
+        state.activeSkills = [];
+        state.chatHistory = [];
+        state.activeChips = new Set();
+        state.dna = { creative_focus: 50, budget_sensitivity: 50, hardware_constraint: 30, technical_skill: 50, student_status: 50, learning_tolerance: 50 };
+        state.savings = { total_monthly_spend: 0, potential_monthly_savings: 0, annual_savings: 0, goal_pct: 67, users_saved_this_week: 128000 };
+        var chatEl = document.getElementById('chat-messages');
+        if (chatEl) chatEl.innerHTML = '';
+        renderDNA(); renderChips(); renderSubscriptions(); renderSkillTranslator();
+        updateSavingsPanel(); updateGlobalMetrics();
+        addChatMsg('ai', 'Hey! I\'m <strong>AltBot</strong> — your AI software advisor. Tell me what you need and I\'ll find the best free or cheaper alternatives for your creative workflow. What software are you trying to replace?');
+    }
+
     function resetAllData() {
-        state.subscriptions = []; state.switchSimAppliedSavings = 0; state.activeSkills = [];
-        renderSubscriptions(); renderSkillTranslator(); runSwitchSim(); runWorkflowRebuilder();
+        resetStateToDefaults();
         showToast('Reset stack & metrics to defaults.');
     }
 
@@ -596,7 +610,8 @@
         window.signOut = async function() { await supabase.auth.signOut(); window.location.href = "/"; };
 
         async function loadUserData() {
-            hideGate(); var session = await supabase.auth.getSession();
+            hideGate(); resetStateToDefaults();
+            var session = await supabase.auth.getSession();
             var sess = session.data && session.data.session; if (!sess) return;
             ALT.user = sess.user;
             var profiles = await supabase.from("profiles").select("*").maybeSingle();
