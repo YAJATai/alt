@@ -10,34 +10,36 @@ Rules:
 - Respect budget and hardware constraints the user mentions.
 - Every recommendation needs a reason.`;
 
-function p(parts) {
-  return { role: "user", parts: [{ text: parts.join("\n\n") }] };
-}
-
 async function gen({ key, model, system, userParts, schema, temperature = 0.7 }) {
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: system }] },
-        contents: [{ role: "user", parts: userParts }],
-        generationConfig: {
-          temperature,
-          responseMimeType: "application/json",
-          responseSchema: schema
-        }
-      })
-    }
-  );
+  const messages = [
+    { role: "system", content: system + "\n\nYou MUST respond with valid JSON matching this schema:\n" + JSON.stringify(schema, null, 2) },
+    ...userParts.map(p => ({ role: "user", content: p.text }))
+  ];
+
+  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${key}`,
+      "HTTP-Referer": "https://alt-cyan.vercel.app",
+      "X-Title": "ALT. AI Platform"
+    },
+    body: JSON.stringify({
+      model,
+      messages,
+      temperature,
+      response_format: { type: "json_object" }
+    })
+  });
+
   if (!res.ok) {
     const detail = await res.text().catch(() => "");
-    throw new Error(`Gemini HTTP ${res.status}: ${detail.slice(0, 300)}`);
+    throw new Error(`OpenRouter HTTP ${res.status}: ${detail.slice(0, 300)}`);
   }
+
   const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  if (!text) throw new Error("No response text from Gemini.");
+  const text = data?.choices?.[0]?.message?.content;
+  if (!text) throw new Error("No response text from OpenRouter.");
   return JSON.parse(text);
 }
 
@@ -258,9 +260,8 @@ module.exports = async function handler(req, res) {
     res.status(405).json({ error: "Method not allowed." });
     return;
   }
-  const key = process.env.GEMINI_API_KEY;
+  const key = process.env.OPENROUTER_API_KEY;
 
-  // Authenticate with Supabase — the client's JWT must map to a real user.
   const authHeader = req.headers.authorization || "";
   const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
   if (!token) {
@@ -287,13 +288,13 @@ module.exports = async function handler(req, res) {
     return;
   }
   if (!key) {
-    res.status(500).json({ error: "Server is not configured with a Gemini API key yet. Add GEMINI_API_KEY in Vercel → Project → Settings → Environment Variables, then redeploy." });
+    res.status(500).json({ error: "Server is not configured with an OpenRouter API key. Add OPENROUTER_API_KEY in Vercel → Settings → Environment Variables, then redeploy." });
     return;
   }
 
   const parts = buildPrompt(body).map(t => ({ text: t }));
-  const primary = process.env.GEMINI_MODEL || "gemini-3.6-flash";
-  const fallback = process.env.GEMINI_MODEL_FALLBACK || "gemini-2.0-flash";
+  const primary = process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001";
+  const fallback = process.env.OPENROUTER_MODEL_FALLBACK || "anthropic/claude-3.5-haiku";
 
   let lastErr = null;
   for (const model of [primary, fallback]) {
