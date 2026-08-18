@@ -28,6 +28,7 @@ async function gen({ key, model, system, userParts, schema, temperature = 0.7 })
       model,
       messages,
       temperature,
+      max_tokens: 4096,
       response_format: { type: "json_object" }
     })
   });
@@ -293,8 +294,8 @@ module.exports = async function handler(req, res) {
   }
 
   const parts = buildPrompt(body).map(t => ({ text: t }));
-  const primary = process.env.OPENROUTER_MODEL || "google/gemini-2.0-flash-001";
-  const fallback = process.env.OPENROUTER_MODEL_FALLBACK || "anthropic/claude-3.5-haiku";
+  const primary = process.env.OPENROUTER_MODEL || "google/gemini-3.6-flash";
+  const fallback = process.env.OPENROUTER_MODEL_FALLBACK || "anthropic/claude-3-haiku";
 
   let lastErr = null;
   for (const model of [primary, fallback]) {
