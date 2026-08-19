@@ -135,13 +135,32 @@
                     </div>
                 </div>
             </div>
-        </div>
-            <div id="recommendations-section" class="mb-12 hidden fade-up">
+            </div>
+            <div class="max-w-3xl mx-auto px-4 mt-4 mb-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="card p-4">
+                        <div class="flex items-center gap-2 mb-3"><div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:rgba(253,134,219,.12)"><svg class="w-3.5 h-3.5" style="color:#fd86db" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div><div><h3 class="text-xs font-bold text-[#F4F4F6]">Your DNA</h3><p class="text-[9px]" style="color:rgba(255,255,255,.4)">Computed from conversations</p></div></div>
+                        <div class="space-y-2" id="dna-attributes"></div>
+                    </div>
+                    <div class="card p-4 relative overflow-hidden" style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(253,134,219,.06))">
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-2"><div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:rgba(16,185,129,.15)"><svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3 class="text-xs font-bold text-[#F4F4F6]">Student Savings</h3></div>
+                            <div class="savings-counter gradient-text-green text-lg font-extrabold mb-0.5" id="savings-total">1,28,000</div>
+                            <p class="text-[10px] mb-2" style="color:rgba(255,255,255,.46)">saved by students this week</p>
+                            <div class="mb-1.5 flex justify-between text-[9px] font-semibold" style="color:rgba(255,255,255,.5)"><span>Savings Goal</span><span id="savings-goal-pct">67%</span></div>
+                            <div class="dna-bar"><div class="dna-bar-fill" id="savings-bar" style="width:67%;background:linear-gradient(90deg,#34d399,#6ee7b7)"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="max-w-3xl mx-auto px-4">
+                <div id="recommendations-section" class="mb-8 hidden fade-up">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background:rgba(16,185,129,.12)"><svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
                     <div><h2 class="text-lg font-bold text-[#F4F4F6]">Top Matches for <span id="rec-query" class="gradient-text">"your query"</span></h2><p class="text-[11px]" style="color:rgba(255,255,255,.4)">AI-ranked alternatives based on your needs</p></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="recommendations-grid"></div>
+                </div>
             </div>
             <div class="mb-12">
                 <div class="flex items-center gap-3 mb-6"><div class="text-xl">💡</div><div><h2 class="text-lg font-bold text-[#F4F4F6]">AI-Powered Tools</h2><p class="text-[11px]" style="color:rgba(255,255,255,.4)">Optimize your creative stack</p></div></div>
@@ -154,7 +173,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- TAB: SAVINGS -->
     <div id="tab-savings" class="tab-content">
