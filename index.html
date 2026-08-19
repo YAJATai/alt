@@ -41,9 +41,19 @@
         .nav-tab{padding:8px 18px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.46);background:transparent;border:none}
         .nav-tab:hover{color:rgba(255,255,255,.75);background:rgba(255,255,255,.05)}
         .nav-tab.active{color:#F4F4F6;background:rgba(255,255,255,.08)}
-        .chat-msg{max-width:85%;padding:14px 18px;border-radius:18px;font-size:13px;line-height:1.65;word-wrap:break-word}
-        .chat-msg.user{background:linear-gradient(135deg,rgba(255,197,220,.18),rgba(253,134,219,.12));border:1px solid rgba(253,134,219,.25);margin-left:auto;color:#F4F4F6;border-bottom-right-radius:6px}
-        .chat-msg.ai{background:#1A1A1E;border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.85);border-bottom-left-radius:6px}
+        .chat-row{display:flex;gap:12px;max-width:780px;margin:0 auto}
+        .chat-row.user{justify-content:flex-end}
+        .chat-row.ai{justify-content:flex-start}
+        .chat-avatar{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;margin-top:2px}
+        .chat-avatar.ai-av{background:linear-gradient(135deg,rgba(255,197,220,.2),rgba(253,134,219,.15));color:#fd86db}
+        .chat-avatar.user-av{background:linear-gradient(135deg,rgba(99,102,241,.2),rgba(168,85,247,.15));color:#a5b4fc}
+        .chat-bubble{max-width:calc(100% - 44px);padding:14px 18px;border-radius:18px;font-size:13px;line-height:1.7;word-wrap:break-word}
+        .chat-bubble.user{background:linear-gradient(135deg,rgba(255,197,220,.18),rgba(253,134,219,.12));border:1px solid rgba(253,134,219,.25);color:#F4F4F6;border-bottom-right-radius:6px}
+        .chat-bubble.ai{background:#1A1A1E;border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.85);border-bottom-left-radius:6px}
+        .chat-bubble p{margin:0 0 8px 0}.chat-bubble p:last-child{margin-bottom:0}
+        .suggestion-chips{display:flex;flex-wrap:wrap;gap:8px;max-width:780px;margin:0 auto}
+        .suggestion-chip{padding:10px 16px;border-radius:12px;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
+        .suggestion-chip:hover{background:rgba(253,134,219,.08);border-color:rgba(253,134,219,.25);color:#fd86db}
         .dna-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.08);overflow:hidden}
         .dna-bar-fill{height:100%;border-radius:3px;transition:width .8s cubic-bezier(.16,1,.3,1)}
         .typing-dot{width:6px;height:6px;border-radius:50%;background:rgba(253,134,219,.6);animation:typingBounce 1.4s infinite;display:inline-block}
@@ -114,51 +124,18 @@
 
     <!-- TAB: DISCOVER -->
     <div id="tab-discover" class="tab-content active">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-            <div class="text-center mb-10 fade-up">
-                <h1 class="text-3xl sm:text-5xl font-extrabold font-display mb-3">Find your <span class="gradient-text">perfect tool.</span></h1>
-                <p class="text-sm sm:text-base max-w-xl mx-auto" style="color:rgba(255,255,255,.5)">Tell AltBot what you need. Get personalized software recommendations, savings estimates, and skill-matched alternatives.</p>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
-                <div class="lg:col-span-2">
-                    <div class="card p-0 flex flex-col" style="height:520px">
-                        <div id="chat-messages" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar"></div>
-                        <div class="px-5 pt-2 pb-1 flex flex-wrap gap-1.5" id="context-chips"></div>
-                        <div class="p-4 border-t" style="border-color:rgba(255,255,255,.06)">
-                            <div class="flex gap-2">
-                                <input type="text" id="chat-input" placeholder="Describe what you need... e.g. 'I need a free video editor'" class="flex-1 px-4 py-3" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}">
-                                <button onclick="sendChat()" id="chat-send-btn" class="btn-primary px-5 flex items-center gap-2"><span>Ask Alt</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="space-y-5">
-                    <div class="card p-5">
-                        <div class="flex items-center gap-2 mb-4">
-                            <div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background:rgba(253,134,219,.12)"><svg class="w-4 h-4" style="color:#fd86db" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
-                            <div><h3 class="text-sm font-bold text-[#F4F4F6]">Your DNA</h3><p class="text-[10px]" style="color:rgba(255,255,255,.4)">Computed from conversations</p></div>
-                        </div>
-                        <div class="space-y-3" id="dna-attributes"></div>
-                    </div>
-                    <div class="card p-5 relative overflow-hidden" style="background:linear-gradient(135deg,rgba(16,185,129,.08),rgba(253,134,219,.06))">
-                        <div class="relative z-10">
-                            <div class="flex items-center gap-2 mb-3"><div class="w-8 h-8 rounded-xl flex items-center justify-center" style="background:rgba(16,185,129,.15)"><svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div><h3 class="text-sm font-bold text-[#F4F4F6]">Student Savings</h3></div>
-                            <div class="savings-counter gradient-text-green mb-1" id="savings-total">1,28,000</div>
-                            <p class="text-[11px] mb-3" style="color:rgba(255,255,255,.46)">saved by students this week</p>
-                            <div class="mb-2 flex justify-between text-[10px] font-semibold" style="color:rgba(255,255,255,.5)"><span>Savings Goal</span><span id="savings-goal-pct">67%</span></div>
-                            <div class="dna-bar"><div class="dna-bar-fill" id="savings-bar" style="width:67%;background:linear-gradient(90deg,#34d399,#6ee7b7)"></div></div>
-                        </div>
-                    </div>
-                    <div class="card p-5">
-                        <h3 class="text-sm font-bold text-[#F4F4F6] mb-3">Quick Prompts</h3>
-                        <div class="space-y-2">
-                            <button onclick="quickPrompt('I need a free alternative to Adobe Premiere Pro for video editing')" class="w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition hover:bg-white/5" style="color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.06)">"Free alternative to Premiere Pro"</button>
-                            <button onclick="quickPrompt('I am a design student who uses Canva Pro but wants to save money')" class="w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition hover:bg-white/5" style="color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.06)">"Canva Pro but cheaper"</button>
-                            <button onclick="quickPrompt('I use the entire Adobe Creative Cloud for illustration and motion — is there a better stack?')" class="w-full text-left px-3 py-2.5 rounded-xl text-xs font-medium transition hover:bg-white/5" style="color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.06)">"Replace Adobe CC workflow"</button>
-                        </div>
+        <div class="max-w-3xl mx-auto px-4 mt-6 flex flex-col" style="height:calc(100vh - 80px)">
+            <div id="chat-messages" class="flex-1 overflow-y-auto custom-scrollbar pb-4"></div>
+            <div class="pt-2 pb-1">
+                <div class="px-5 pt-2 pb-1 flex flex-wrap gap-1.5" id="context-chips"></div>
+                <div class="flex gap-2 items-end max-w-3xl mx-auto">
+                    <div class="flex-1 relative">
+                        <input type="text" id="chat-input" placeholder="Ask AltBot anything..." class="w-full px-5 py-4 pr-12 rounded-2xl text-sm" style="background:#1A1A1E;border:1px solid rgba(255,255,255,.1);color:#F4F4F6;outline:none" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat();}" onfocus="this.style.borderColor='rgba(253,134,219,.4)'" onblur="this.style.borderColor='rgba(255,255,255,.1)'">
+                        <button onclick="sendChat()" id="chat-send-btn" class="absolute right-2 bottom-2 w-9 h-9 rounded-xl flex items-center justify-center transition" style="background:linear-gradient(135deg,#ffc5dc,#fd86db);color:#161616"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg></button>
                     </div>
                 </div>
             </div>
+        </div>
             <div id="recommendations-section" class="mb-12 hidden fade-up">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="w-10 h-10 rounded-2xl flex items-center justify-center" style="background:rgba(16,185,129,.12)"><svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
@@ -317,35 +294,61 @@
     // === CHAT ===
     function addChatMsg(role, html) {
         var container = document.getElementById('chat-messages');
-        var div = document.createElement('div');
-        div.className = 'flex ' + (role === 'user' ? 'justify-end' : 'justify-start');
-        var inner = document.createElement('div');
-        inner.className = 'chat-msg ' + role;
-        inner.innerHTML = html;
-        div.appendChild(inner);
-        container.appendChild(div);
+        var row = document.createElement('div');
+        row.className = 'chat-row ' + role;
+        var av = document.createElement('div');
+        av.className = 'chat-avatar ' + (role === 'ai' ? 'ai-av' : 'user-av');
+        av.textContent = role === 'ai' ? 'ALT' : 'U';
+        var bubble = document.createElement('div');
+        bubble.className = 'chat-bubble ' + role;
+        bubble.innerHTML = html;
+        row.appendChild(av);
+        row.appendChild(bubble);
+        container.appendChild(row);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function addWelcomeMessage() {
+        var container = document.getElementById('chat-messages');
+        container.innerHTML = '';
+        var row = document.createElement('div');
+        row.className = 'chat-row ai';
+        row.innerHTML = '<div class="chat-avatar ai-av">ALT</div><div class="chat-bubble ai"><p style="font-size:15px;font-weight:600;color:#F4F4F6;margin-bottom:6px">Hey! I\'m AltBot.</p><p>I find the best free or cheaper alternatives for your creative software. Tell me what you\'re using or what you need — I\'ll handle the rest.</p></div>';
+        container.appendChild(row);
+        var chips = document.createElement('div');
+        chips.className = 'suggestion-chips mt-4';
+        chips.id = 'welcome-chips';
+        chips.innerHTML = '<button class="suggestion-chip" onclick="quickPrompt(\'I need a free alternative to Adobe Premiere Pro for video editing\')">Free Premiere Pro alternative</button><button class="suggestion-chip" onclick="quickPrompt(\'I am a design student who uses Canva Pro but wants to save money\')">Canva Pro but cheaper</button><button class="suggestion-chip" onclick="quickPrompt(\'I use the entire Adobe Creative Cloud for illustration and motion — is there a better stack?\')">Replace Adobe CC workflow</button><button class="suggestion-chip" onclick="quickPrompt(\'I am a student on a low-end laptop, what is the best free creative stack?\')">Best free stack for my laptop</button>';
+        container.appendChild(chips);
         container.scrollTop = container.scrollHeight;
     }
 
     function showTyping() {
         var container = document.getElementById('chat-messages');
-        var div = document.createElement('div');
-        div.className = 'flex justify-start';
-        div.id = 'typing-indicator';
-        div.innerHTML = '<div class="chat-msg ai flex items-center gap-2"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
-        container.appendChild(div);
+        var row = document.createElement('div');
+        row.className = 'chat-row ai';
+        row.id = 'typing-indicator';
+        row.innerHTML = '<div class="chat-avatar ai-av">ALT</div><div class="chat-bubble ai flex items-center gap-2"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>';
+        container.appendChild(row);
         container.scrollTop = container.scrollHeight;
     }
 
     function removeTyping() { var el = document.getElementById('typing-indicator'); if (el) el.remove(); }
 
-    function quickPrompt(text) { document.getElementById('chat-input').value = text; sendChat(); }
+    function quickPrompt(text) {
+        var chips = document.getElementById('welcome-chips');
+        if (chips) chips.remove();
+        document.getElementById('chat-input').value = text;
+        sendChat();
+    }
 
     async function sendChat() {
         var input = document.getElementById('chat-input');
         var text = input.value.trim();
         if (!text) return;
         input.value = '';
+        var chips = document.getElementById('welcome-chips');
+        if (chips) chips.remove();
         addChatMsg('user', text);
         state.chatHistory.push({ role: 'user', text: text });
         var sendBtn = document.getElementById('chat-send-btn');
@@ -545,7 +548,7 @@
         initSwitchSimDropdown(); runSwitchSim(); runWorkflowRebuilder();
         renderSubscriptions(); renderSkillTranslator(); switchScenarioTab('FREELANCER');
         updateGlobalMetrics(); renderDNA(); renderChips(); updateSavingsPanel();
-        addChatMsg('ai', 'Hey! I\'m <strong>AltBot</strong> — your AI software advisor. Tell me what you need and I\'ll find the best free or cheaper alternatives for your creative workflow. What software are you trying to replace?');
+        addWelcomeMessage();
     });
 
     function resetStateToDefaults() {
@@ -560,7 +563,7 @@
         if (chatEl) chatEl.innerHTML = '';
         renderDNA(); renderChips(); renderSubscriptions(); renderSkillTranslator();
         updateSavingsPanel(); updateGlobalMetrics();
-        addChatMsg('ai', 'Hey! I\'m <strong>AltBot</strong> — your AI software advisor. Tell me what you need and I\'ll find the best free or cheaper alternatives for your creative workflow. What software are you trying to replace?');
+        addWelcomeMessage();
     }
 
     function resetAllData() {
